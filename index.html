@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Modern Revival - Design Guidelines v1.2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burnt-orange: #D65A31;
+            --charcoal: #2B2B2B;
+            --eggshell: #F4F1EA;
+            --surface: #FFFFFF;
+            --secondary-text: #636363;
+            --success: #4A6C6F;
+            --error: #B22222;
+            --warning: #E9B44C;
+            
+            --space-xs: 8px;
+            --space-sm: 13px;
+            --space-md: 21px;
+            --space-lg: 34px;
+            --space-xl: 55px;
+
+            --ease-turntable: cubic-bezier(0.19, 1, 0.22, 1);
+            --duration-fast: 150ms;
+            --duration-normal: 450ms;
+            --duration-slow: 1200ms;
+            --shadow-hard: 4px 4px 0px rgba(43, 43, 43, 0.15);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Libre Bodoni', serif;
+            background-color: var(--eggshell);
+            /* Updated Background: Bold Geometric Shapes in Burnt Orange */
+            background-image: 
+                linear-gradient(rgba(43, 43, 43, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(43, 43, 43, 0.04) 1px, transparent 1px),
+                radial-gradient(circle at 100% 20%, var(--burnt-orange) 0%, var(--burnt-orange) 15%, transparent 15.2%),
+                radial-gradient(circle at -5% 60%, var(--burnt-orange) 0%, var(--burnt-orange) 10%, transparent 10.2%),
+                linear-gradient(160deg, transparent 45%, var(--burnt-orange) 45%, var(--burnt-orange) 45.5%, transparent 45.5%),
+                linear-gradient(70deg, transparent 80%, var(--burnt-orange) 80%, var(--burnt-orange) 82%, transparent 82.2%);
+            background-size: 64px 64px, 64px 64px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+            background-attachment: fixed;
+            color: var(--charcoal);
+            line-height: 1.6;
+            margin: 0;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Digital Noise Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.025;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .display-font {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            line-height: 1.1;
+        }
+
+        .container-custom {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Interactive Physicality: Generic Style for Cards and Swatches */
+        .interactive-physicality {
+            transition: transform var(--duration-normal) var(--ease-turntable), filter var(--duration-normal) var(--ease-turntable), box-shadow var(--duration-normal) var(--ease-turntable);
+        }
+        .interactive-physicality:hover {
+            transform: scale(1.05);
+            filter: sepia(0) contrast(1);
+            box-shadow: 8px 8px 0px rgba(43, 43, 43, 0.2);
+            z-index: 10;
+        }
+
+        .hard-card {
+            background: var(--surface);
+            border: 2px solid var(--charcoal);
+            box-shadow: var(--shadow-hard);
+            padding: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .btn-retro {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 10px 20px;
+            border: 2px solid var(--charcoal);
+            box-shadow: var(--shadow-hard); /* Added shadow for consistency */
+            transition: all var(--duration-normal) var(--ease-turntable);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .btn-primary { background-color: var(--burnt-orange); color: white; border-color: var(--burnt-orange); }
+        .btn-primary:hover { 
+            background-color: var(--charcoal); 
+            border-color: var(--charcoal); 
+            transform: scale(1.05); /* Unified with interactive-physicality scale */
+            box-shadow: 8px 8px 0px rgba(43, 43, 43, 0.2);
+        }
+
+        .copy-trigger { cursor: pointer; position: relative; }
+
+        /* Subtle Gray Toast Notification (Bottom Right) */
+        #toast {
+            position: fixed;
+            bottom: 24px; 
+            right: 24px;
+            background: #4A4A4A;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 9px; 
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            z-index: 10000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 400ms var(--ease-turntable);
+            pointer-events: none;
+            border-radius: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        #toast.show { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        .media-placeholder {
+            background-color: #E8E4DB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            opacity: 0.6;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            filter: sepia(0.4) grayscale(0.5); /* Base state for cards */
+            transition: filter var(--duration-normal) var(--ease-turntable);
+        }
+        .interactive-physicality:hover .media-placeholder {
+            filter: sepia(0) grayscale(0);
+        }
+
+        .media-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+        .ds-icon {
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .slash-accent {
+            width: 2px;
+            height: 40px;
+            background-color: var(--burnt-orange);
+            transform: rotate(45deg);
+        }
+
+        .loader-analog {
+            width: 40px;
+            height: 40px;
+            border: 2.0px solid var(--burnt-orange);
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            animation: analog-rotate 1200ms infinite linear;
+        }
+
+        @keyframes analog-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .section-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--secondary-text);
+            border-bottom: 2px solid var(--charcoal);
+            padding-bottom: 4px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Improved Input Visibility */
+        .retro-input-container {
+            position: relative;
+            background-color: rgba(43, 43, 43, 0.05);
+            border-bottom: 2px solid var(--charcoal);
+            transition: background-color 300ms, border-color 300ms;
+        }
+        .retro-input-container:focus-within {
+            background-color: rgba(214, 90, 49, 0.05);
+            border-color: var(--burnt-orange);
+        }
+        .retro-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 16px 12px;
+            font-family: 'Libre Bodoni', serif;
+            font-size: 1.1rem;
+            outline: none;
+            color: var(--charcoal);
+        }
+        .retro-input::placeholder {
+            color: var(--charcoal);
+            opacity: 0.3;
+        }
+
+        .equal-height-grid {
+            display: grid;
+            grid-auto-rows: 1fr;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast">コピーしました</div>
+
+    <!-- Header -->
+    <header class="sticky top-0 w-full z-50 bg-[#F4F1EA]/95 border-b-2 border-black backdrop-blur-sm">
+        <div class="container-custom py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="24" height="24"/>
+                    <path d="M4 28L28 4" stroke="var(--burnt-orange)"/>
+                </svg>
+                <h1 class="display-font text-xs tracking-[0.2em]">Retro Modern Revival</h1>
+            </div>
+            <button class="btn-retro btn-primary" onclick="copyFullYaml()">
+                Copy YAML System
+            </button>
+        </div>
+    </header>
+
+    <!-- TOP AREA: KV + Concept Message -->
+    <section class="container-custom pt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border-2 border-black shadow-hard mb-12 overflow-hidden bg-black">
+            <div class="h-64 md:h-96 overflow-hidden border-b-2 md:border-b-0 md:border-r-2 border-black bg-[#E8E4DB]">
+                <div class="media-placeholder h-full w-full opacity-100">
+                    <img src="retro_kv.jpg" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <div class="p-8 md:p-12 bg-black text-white flex flex-col justify-center gap-6">
+                <div class="slash-accent"></div>
+                <h2 class="display-font text-3xl md:text-5xl leading-tight">Authenticity<br>Over Innovation.</h2>
+                <p class="text-lg italic opacity-80 font-serif leading-relaxed">
+                    懐古的温かみと建築的冷徹さの矛盾した融合。
+                    純粋な幾何学によって構築される「洗練された反逆者」の規律。
+                </p>
+            </div>
+        </div>
+
+        <!-- Design Principles -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border-2 border-black mb-12 bg-white/80 backdrop-blur-sm">
+            <div class="p-8 border-b-2 md:border-b-0 md:border-r-2 border-black flex flex-col gap-4">
+                <h4 class="display-font text-xs text-[#D65A31]">Geometric Precision</h4>
+                <p class="text-sm font-serif italic">すべての基本図形に黄金比を適用。数学的な純粋性による規律の確立。</p>
+            </div>
+            <div class="p-8 border-b-2 md:border-b-0 md:border-r-2 border-black flex flex-col gap-4">
+                <h4 class="display-font text-xs text-[#D65A31]">Analog Soul, Digital Body</h4>
+                <p class="text-sm font-serif italic">0.02%のデジタルノイズ。有機的テクスチャとデジタルグリッドの融合。</p>
+            </div>
+            <div class="p-8 flex flex-col gap-4">
+                <h4 class="display-font text-xs text-[#D65A31]">Bold Contrast</h4>
+                <p class="text-sm font-serif italic">背景色#F4F1EAに対し、深い影を対比。視覚的ヒエラルキーの劇的な明示。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN AREA -->
+    <div class="container-custom pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+            
+            <!-- LEFT COLUMN -->
+            <div class="md:col-span-5 space-y-16">
+                
+                <section>
+                    <span class="section-label">01 Colors</span>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="h-28 bg-[#D65A31] p-6 text-white flex flex-col justify-between shadow-inner copy-trigger interactive-physicality" onclick="copyText('#D65A31')">
+                            <span class="display-font text-[9px]">Burnt Orange</span>
+                            <span class="font-mono text-xs">#D65A31</span>
+                        </div>
+                        <div class="h-28 bg-[#F4F1EA] border-2 border-black p-6 flex flex-col justify-between copy-trigger interactive-physicality" onclick="copyText('#F4F1EA')">
+                            <span class="display-font text-[9px]">Eggshell Background</span>
+                            <span class="font-mono text-xs">#F4F1EA</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="h-20 bg-[#2B2B2B] text-white p-4 font-mono text-[10px] copy-trigger interactive-physicality" onclick="copyText('#2B2B2B')">#2B2B2B</div>
+                            <div class="h-20 bg-[#4A6C6F] text-white p-4 font-mono text-[10px] copy-trigger interactive-physicality" onclick="copyText('#4A6C6F')">#4A6C6F</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <span class="section-label">02 Typography Scale</span>
+                    <div class="space-y-10 bg-white p-8 border-2 border-black shadow-hard">
+                        <div>
+                            <p class="text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-widest">Display</p>
+                            <h4 class="display-font text-4xl mb-2">Montserrat</h4>
+                            <p class="text-xs opacity-60">Architectural statement. Weight 800-900.</p>
+                        </div>
+                        <div class="pt-6 border-t border-black/10">
+                            <p class="text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-widest">Body</p>
+                            <p class="text-xl font-serif italic mb-2">Libre Bodoni Serif.</p>
+                            <p class="text-xs opacity-60">Weight 400. Line height 1.6.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <span class="section-label">03 Icon Geometry</span>
+                    <div class="grid grid-cols-4 gap-4 equal-height-grid">
+                        <div class="hard-card items-center justify-center aspect-square">
+                            <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="16" cy="16" r="10"/><path d="M16 4L16 28" stroke="var(--burnt-orange)"/>
+                            </svg>
+                        </div>
+                        <div class="hard-card items-center justify-center aspect-square">
+                            <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="6" width="20" height="20"/><circle cx="28" cy="4" r="2" fill="var(--burnt-orange)" stroke="none"/>
+                            </svg>
+                        </div>
+                        <div class="hard-card items-center justify-center aspect-square">
+                            <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 16H28M16 4V28"/><path d="M4 4L28 28" stroke="var(--burnt-orange)" stroke-opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="hard-card items-center justify-center aspect-square">
+                            <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 26V6H20L26 12V26H6Z"/><path d="M10 22L22 10" stroke="var(--burnt-orange)"/>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <span class="section-label">04 Layout & Spacing</span>
+                    <div class="space-y-4">
+                        <div class="p-6 bg-white border-2 border-black shadow-hard">
+                            <div class="grid grid-cols-12 h-6 gap-1 mb-4">
+                                <div class="bg-gray-100"></div><div class="bg-gray-100"></div><div class="bg-gray-100"></div><div class="bg-gray-100"></div>
+                                <div class="bg-gray-100"></div><div class="bg-gray-100"></div><div class="bg-gray-100"></div><div class="bg-gray-100"></div>
+                                <div class="bg-gray-100"></div><div class="bg-gray-100"></div><div class="bg-gray-100"></div><div class="bg-gray-100"></div>
+                            </div>
+                            <p class="display-font text-[9px] tracking-widest">12 Columns / 24px Gutter</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <span class="section-label">05 Motion Tokens & Physics</span>
+                    <div class="p-6 bg-black text-white space-y-8 shadow-hard border-l-4 border-[#D65A31]">
+                        <div class="space-y-4">
+                            <p class="display-font text-[9px] text-[#D65A31] tracking-widest">Philosophy</p>
+                            <p class="text-xs italic opacity-80">Inertia of a heavy analog turntable.</p>
+                        </div>
+                        <div class="space-y-2 font-mono text-[10px]">
+                            <div class="flex justify-between border-b border-white/10 pb-1"><span>Fast</span><span>150ms</span></div>
+                            <div class="flex justify-between border-b border-white/10 pb-1"><span>Normal</span><span>450ms</span></div>
+                            <div class="flex justify-between border-b border-white/10 pb-1"><span>Slow</span><span>1200ms</span></div>
+                            <div class="flex justify-between pt-2"><span>Easing</span><span>cubic-bezier(0.19, 1, 0.22, 1)</span></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="md:col-span-7 space-y-16">
+                
+                <section>
+                    <span class="section-label">06 Human & Photography Style</span>
+                    <div class="space-y-12">
+                        <div class="space-y-6">
+                            <h4 class="display-font text-xs text-[#D65A31] tracking-[0.4em]">Fashion Styling</h4>
+                            <div class="grid grid-cols-2 gap-6 equal-height-grid">
+                                <img src="fs01.jpg" alt="Fashion 01">
+                                <img src="fs02.jpg" alt="Fashion 02">
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h4 class="display-font text-xs text-[#D65A31] tracking-[0.4em]">Photography Style</h4>
+                            <div class="grid grid-cols-2 gap-6 equal-height-grid">
+                                <img src="fs01.jpg" alt="Photography Slot 01">
+                                <img src="fs02.jpg" alt="Photography Slot 02">
+                            </div>
+                        </div>
+
+                        <div class="p-8 bg-[#2B2B2B] text-white space-y-6 shadow-hard">
+                            <div class="flex justify-between items-center">
+                                <p class="display-font text-[9px] text-[#D65A31]">NanoBanana Prompt</p>
+                                <button class="btn-retro text-white border-white/20 hover:bg-white hover:text-black py-1 px-3" onclick="copyText('Retro Modern Revival: {visual_intent}, {physical_traits}, {materials}, --ar 16:9')">コピー</button>
+                            </div>
+                            <code class="block text-xs font-mono opacity-60 leading-relaxed border-l border-white/20 pl-4">
+                                "Retro Modern Revival: {visual_intent}, {physical_traits}, {materials}, --ar 16:9"
+                            </code>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <span class="section-label">07 UI Component Library</span>
+                    
+                    <div class="space-y-12">
+                        <!-- Buttons with added shadow and consistent hover physics -->
+                        <div class="space-y-4">
+                            <p class="display-font text-[9px] text-gray-400 uppercase">Buttons</p>
+                            <div class="flex flex-wrap gap-8 items-center bg-white/80 p-8 border-2 border-black backdrop-blur-sm">
+                                <button class="btn-retro btn-primary rounded-[0px] w-40">Sharp Primary</button>
+                                <button class="btn-retro btn-primary rounded-[40px] w-40">Round Primary</button>
+                                <button class="btn-retro border-2 border-black rounded-[0px] w-40 hover:bg-black hover:text-white" style="transition: all var(--duration-normal) var(--ease-turntable);">Outline</button>
+                            </div>
+                        </div>
+
+                        <!-- Cards with Interactive Physicality -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 equal-height-grid">
+                            <div class="hard-card gap-6 min-h-[160px] interactive-physicality">
+                                <h5 class="display-font text-xs tracking-widest uppercase">Interactive Physicality</h5>
+                                <div class="media-placeholder flex-1 p-4 text-center leading-relaxed italic">
+                                    ホバー時に1.05倍拡大・セピア/モノクロ解除。
+                                </div>
+                            </div>
+                            <div class="hard-card items-center justify-center gap-6 min-h-[160px]">
+                                <div class="loader-analog"></div>
+                                <p class="display-font text-[9px] tracking-widest uppercase">Inertia Rotation</p>
+                            </div>
+                        </div>
+
+                        <!-- Form Section -->
+                        <div class="space-y-6 pt-6">
+                            <p class="display-font text-[9px] text-gray-400 uppercase">Form Aesthetic</p>
+                            <div class="bg-white/90 p-8 border-2 border-black space-y-10 shadow-hard backdrop-blur-sm">
+                                <div class="space-y-4">
+                                    <label class="display-font text-[9px] tracking-[0.2em] block uppercase">Creative Identifier</label>
+                                    <div class="retro-input-container">
+                                        <input type="text" placeholder="名前またはIDを入力..." class="retro-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="p-8 border-4 border-dashed border-[#B22222] bg-white space-y-6 shadow-hard">
+                    <h3 class="display-font text-lg text-[#B22222] border-b-2 border-[#B22222] pb-2">Forbidden Rules</h3>
+                    <ul class="text-[10px] font-bold space-y-3 uppercase tracking-wider opacity-80">
+                        <li class="flex gap-4"><span class="text-[#B22222]">✕</span> NO ROUNDED CORNERS FOR STRUCTURAL CONTAINERS</li>
+                        <li class="flex gap-4"><span class="text-[#B22222]">✕</span> NO GRADIENT FILLS</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const systemYaml = `design_system:
+  meta:
+    version: "1.2.0"
+    language: "ja-JP"
+    owner_role: "Design System Owner"
+    last_updated: "2026-01-07"
+
+  strategy:
+    concept_name: "Retro Modern Revival"
+    archetype: "The Sophisticated Rebel"
+    brand_tension: "懐古的温かみ × 建築的冷徹さ"
+
+    design_principles:
+      - name: "Geometric Precision"
+        intent: "数学的な純粋性による規律の確立"
+        physical_translation: "すべての基本図形に円周率または黄金比を用いた整数値を適用"
+      - name: "Analog Soul, Digital Body"
+        intent: "有機的テクスチャとデジタルグリッドの融合"
+        physical_translation: "0.02%のデジタルノイズと8px単位の厳密なグリッド配置"
+      - name: "Bold Contrast"
+        intent: "視覚的ヒエラルキーの劇的な明示"
+        physical_translation: "背景色#F4F1EAに対し、アクセントカラーと深い影を対比"
+
+    target_audience:
+      segment: "Creative Classist"
+      price_range: "Upper-middle to Luxury"
+      values: ["Authenticity", "Quiet Statement", "Mid-century Optimism"]
+
+    accessibility:
+      contrast_ratio_target: "WCAG 2.1 Level AA (4.5:1以上)"
+      minimum_touch_target_px: 44
+      focus_visibility_rule: "3px実線ボーダー / カラー: #D65A31 (Burnt Orange)"
+
+  design_tokens:
+    color:
+      brand_primary: "#D65A31"
+      text_primary: "#2B2B2B"
+    spacing:
+      xs: 8
+      sm: 13
+      md: 21
+      lg: 34
+      xl: 55
+    radius:
+      sm: 0
+      md: 8
+      lg: 40
+    motion:
+      fast_ms: 150
+      normal_ms: 450
+      slow_ms: 1200
+
+  color_system:
+    primary:
+      name: "Burnt Orange"
+      values: { hex: "#D65A31", rgb: "214, 90, 49", hsl: "15, 67%, 52%" }
+      luminance_target: "32.4%"
+      usage: "CTA, Critical Alerts, Brand Logo"
+
+    background:
+      main: { hex: "#F4F1EA", rgb: "244, 241, 234", hsl: "42, 31%, 94%" }
+      surface: { hex: "#FFFFFF", rgb: "255, 255, 255", hsl: "0, 0%, 100%" }
+      texture: "Eggshell finish with 0.02% digital noise grain"
+
+    semantic:
+      success: { hex: "#4A6C6F", rgb: "74, 108, 111", hsl: "185, 20%, 36%" }
+      error: { hex: "#B22222", rgb: "178, 34, 34", hsl: "0, 68%, 42%" }
+      warning: { hex: "#E9B44C", rgb: "233, 180, 76", hsl: "40, 78%, 61%" }
+      text:
+        primary: { hex: "#2B2B2B" }
+        secondary: { hex: "#636363" }
+
+  typography:
+    scale:
+      base_px: 16
+      ratio: 1.25
+    display:
+      family: "Futura PT, Avant Garde Gothic, sans-serif"
+      weight: 800
+      letter_spacing_em: 0.15
+      line_height_ratio: 1.1
+      intent: "Sculptural architectural statement"
+    body:
+      family: "Bodoni, Cooper Black, serif"
+      weight: 400
+      line_height_ratio: 1.6
+      readability_rules:
+        - "行あたりの最大文字数: 40文字"
+        - "段落間余白: 1.6em"
+    copy_writing:
+      tone: "Poetic, Concise, Confident"
+      forbidden_patterns: ["最先端", "コスパ", "激安", "イノベーション", "AI搭載"]
+
+  layout:
+    grid:
+      columns: 12
+      gutter_px: 24
+      margin_px: 64
+    spacing_logic: "Fibonacci sequence based padding"
+    responsive:
+      breakpoints:
+        mobile: { min: 0, max: 767 }
+        tablet: { min: 768, max: 1023 }
+        desktop: { min: 1024 }
+      behavior_rules:
+        typography_scaling: "Fluid scaling via clamp()"
+        column_collapse: "Asymmetric stacking"
+
+  ui_component_library:
+    global_states: [default, hover, active, focus, disabled, loading, error, empty]
+
+    buttons:
+      shape_rule: "Fixed Radius: 0px or 40px"
+      padding_scale: ["12px 24px", "16px 40px", "20px 56px"]
+      states_behavior:
+        hover: "Background: #2B2B2B, Transform: translateY(-2px)"
+        disabled: "Opacity: 0.4, Grayscale: 100%"
+
+    cards:
+      elevation_level: "Level 2 (Offset Shadow)"
+      interaction_physics: "Image scale 1.05 with sepia filter removal"
+
+    forms:
+      input_style: "Border-bottom 2px only"
+      validation_tone: "Weight-based emphasis without emotional icons"
+
+  ui_physics:
+    shape:
+      base_radius_px: 0
+      logic: "Man-made = Sharp, Physical contact = Organic"
+    elevation:
+      shadow_model: "Hard-edged offset shadows (1970s graphic style)"
+      layers:
+        - "Level 1: No shadow, flat color split"
+        - "Level 2: #2B2B2B, 15% Alpha, 4px 4px offset, 0px blur"
+    motion:
+      easing_curve: "cubic-bezier(0.19, 1, 0.22, 1)"
+      duration_reference: "450ms"
+      philosophy: "Inertia of a heavy analog turntable"
+
+  loading_motion:
+    tempo_ms: 1200
+    cycle_variation_percent: 4
+    micro_pause_ms: 100
+    acceleration_profile: "慣性を伴う一定速度の回転"
+    visual_behavior:
+      indicator_type: "連続運動型"
+      stroke_consistency: "2.0px (brand_iconography.geometry.stroke_px)"
+      scale_variation_percent: 0
+      opacity_range: [0.8, 1.0]
+    time_thresholds:
+      instant_ms: 150
+      short_ms: 1200
+      long_ms: 4000
+    behavior_by_duration:
+      instant:
+        show_indicator: false
+      short:
+        show_indicator: true
+        message_visibility: false
+      long:
+        show_indicator: true
+        message_visibility: true
+        message_rule: "Process state only"
+    temporal_philosophy:
+      perceived_speed_bias: "Heavy and steady"
+      emotional_temperature: "Neutral"
+      continuity_with_ui_motion: "整合"
+    ai_constraints:
+      forbidden_patterns: ["過剰な回転", "強い点滅", "ランダム挙動"]
+      allowed_motion_range:
+        rotation_deg_per_sec_max: 120
+        scale_delta_percent_max: 0
+
+  brand_iconography:
+    geometry:
+      grid_px: 32
+      stroke_px: 2.0
+      caps_and_joins: "Butt Cap, Miter Join"
+    visual_style:
+      abstraction_level: "High (Constructivist shapes)"
+      uniqueness_rules: ["Include one 45-degree slash or Burnt Orange dot"]
+    metaphor: "Bauhaus function-driven form"
+
+  human_and_fashion:
+    model_profile:
+      sex: "Androgynous"
+      age_range: "28-42"
+      physical_traits: ["Matte skin texture", "Geometric bob hair", "Sharp jawline"]
+    fashion_styling:
+      materials: ["Heavy Velvet", "Raw Denim", "Brushed Stainless Steel", "Thick Wool"]
+      silhouette: "Structured shoulders, High-waist straight lines"
+      coordination_examples: ["Oversized Mustard Coat with Black Skinny Tie"]
+    vibe_and_pose:
+      posture: "Statue-like stillness"
+      gaze: "Direct, piercing, emotionless"
+      setting: "Minimalist concrete studio with one Eames chair"
+
+  visual_media:
+    photography:
+      angle: "Eye-level or Extreme Low-angle"
+      lighting: "Chiaroscuro (Harsh side lighting)"
+      color_grading: "Cream highlights, Deep Teal shadows, Heavy Grain"
+      aspect_ratio: "16:9"
+    graphic_motifs:
+      patterns: ["Concentric circles", "Grid lines", "Repetitive arches"]
+      usage_rule: "Background layer or bold masking frame"
+
+  ai_generation:
+    abstract_prompt:
+      visual_intent: "High-end editorial fashion, Mid-century modern aesthetic"
+      physical_constraints:
+        composition: "Rule of thirds, Asymmetric balance"
+        lighting: "Hard cinematic shadows, Chiaroscuro"
+        materials: "Tactile velvet, matte concrete"
+        camera: "35mm lens, f/8, sharp focus"
+      forbidden_outputs:
+        - "Neo"
+        - "未来的"
+        - "革新的"
+        - "エモい"
+        - "広告的コピー調"
+
+    model_priority:
+      primary: "NanoBanana"
+      secondary: ["Midjourney v6.0"]
+
+    adapters:
+      NanoBanana:
+        prompt_template: "Retro Modern Revival: {visual_intent}, {physical_traits}, {materials}, --ar 16:9"
+        parameter_mapping: "Grain: 0.8, Sharpness: 1.0, Contrast: High"
+      generic:
+        prompt_template: "Editorial photography, {setting}, structured fashion, burnt orange, cinematic lighting, 35mm film grain --ar 16:9"
+        parameter_mapping: "Negative: futuristic, shiny, soft focus"
+
+  governance:
+    forbidden_rules:
+      - "Do not use rounded corners for structural containers"
+      - "No gradient fills"
+    quality_bar:
+      visual_consistency: "Pixel-perfect alignment to 8px grid"
+      accessibility_compliance: "必須"
+    review_process:
+      flow: ["Design", "Engineering", "QA"]
+      owner: "Design System Owner"
+
+  lifecycle:
+    versioning: "Semantic Versioning"
+    change_policy:
+      minor: "Visual updates only, no breaking API changes"
+      major: "Structural grid or primary token changes"
+    audit_cycle: "Quarterly"`;
+
+        function copyFullYaml() {
+            copyText(systemYaml);
+        }
+
+        function copyText(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+    </script>
+</body>
+</html>
