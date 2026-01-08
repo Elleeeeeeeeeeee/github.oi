@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design System Showroom</title>
+  <style>
+    /* * Core Design System Variables 
+     * 初期値はあくまでフォールバックです。JSによってJSONの値で上書きされます。
+     */
+    :root {
+      /* Palette */
+      --primary: #000;
+      --secondary: #eee;
+      --accent: #00f;
+      --bg: #fff;
+      --surface: #fff;
+      --text: #111;
+      --border: #ddd;
+      --muted: #888;
+
+      /* Metrics */
+      --gutter: 20px;
+      --margin: 20px;
+      
+      /* Spacing Scale */
+      --s-xs: 4px; --s-sm: 8px; --s-md: 16px; --s-lg: 24px; --s-xl: 32px; --s-xxl: 64px;
+
+      /* Radius Scale */
+      --r-sharp: 0px; --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 999px;
+
+      /* Elevation (Shadows) */
+      --shadow-low: 0 1px 2px rgba(0,0,0,0.1);
+      --shadow-med: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-high: 0 10px 15px rgba(0,0,0,0.1);
+
+      /* Motion */
+      --ease: ease;
+      --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --t-fast: 150ms; --t-normal: 300ms; --t-slow: 500ms;
+
+      /* Typography */
+      --font-display: system-ui, sans-serif;
+      --font-body: system-ui, sans-serif;
+      --focus-outline: 2px solid var(--accent);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+
+    /* Dynamic Background Layer */
+    .bg-motif {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15; /* Texture opacity */
+      background-repeat: repeat;
+      background-size: 400px 400px;
+      transition: background-image 0.5s ease;
+    }
+
+    .wrap { position: relative; z-index: 1; }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--s-xxl) var(--margin);
+    }
+
+    /* Grid System */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--gutter);
+    }
+    .col-span-12 { grid-column: span 12; }
+    .col-span-8  { grid-column: span 8; }
+    .col-span-6  { grid-column: span 6; }
+    .col-span-4  { grid-column: span 4; }
+    .col-span-3  { grid-column: span 3; }
+
+    @media (max-width: 900px) {
+      .col-span-8, .col-span-6, .col-span-4, .col-span-3 { grid-column: span 12; }
+      .container { padding: var(--s-lg) var(--s-md); }
+    }
+
+    /* Typography Utilities */
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      margin: 0 0 0.5em 0;
+      line-height: 1.1;
+    }
+    h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.02em; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; }
+    h3 { font-size: 1.25rem; opacity: 0.9; }
+    
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .lead { font-size: 1.2rem; color: var(--muted); max-width: 65ch; margin-bottom: var(--s-xl); }
+    .note { font-size: 0.85rem; color: var(--muted); margin-top: 5px; }
+
+    /* Surface & Panels */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--s-lg);
+      box-shadow: var(--shadow-low);
+      /* Motion hook */
+      transition: transform var(--t-normal) var(--ease), box-shadow var(--t-normal) var(--ease);
+    }
+    .panel:hover {
+      box-shadow: var(--shadow-med);
+    }
+
+    /* Component: Chips */
+    .chip-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .chip {
+      display: inline-flex; align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--r-pill);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      font-weight: bold;
+      box-shadow: var(--shadow-low);
+    }
+    .chip.primary { background: var(--primary); color: var(--bg); border-color: var(--primary); }
+
+    /* Component: Buttons */
+    .btn {
+      appearance: none;
+      display: inline-flex; justify-content: center; align-items: center;
+      background: var(--primary);
+      color: var(--surface); /* Fallback */
+      border: 1px solid var(--border);
+      padding: 12px 24px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      border-radius: var(--r-md);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: var(--shadow-low);
+      transition: all var(--t-fast) var(--ease);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-med);
+    }
+    .btn:active { transform: translateY(0); box-shadow: none; }
+    .btn.secondary { background: var(--secondary); color: var(--text); }
+    .btn.ghost { background: transparent; border-color: transparent; color: var(--text); box-shadow: none; }
+    .btn:focus-visible { outline: var(--focus-outline); outline-offset: 2px; }
+
+    /* Color Swatches */
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .swatch {
+      cursor: pointer;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      transition: transform var(--t-fast) var(--ease);
+    }
+    .swatch:hover { transform: scale(1.05); }
+    .swatch-color { height: 80px; width: 100%; border-bottom: 1px solid var(--border); }
+    .swatch-info { padding: 8px; font-size: 0.75rem; font-family: monospace; }
+    .swatch-name { font-weight: bold; display: block; margin-bottom: 4px; }
+
+    /* Code Block */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: var(--r-sm);
+      overflow-x: auto;
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: #333;
+    }
+    .copy-btn { float: right; font-size: 0.7rem; cursor: pointer; border: none; background: none; text-decoration: underline; color: var(--accent); }
+
+    /* Sections */
+    section { margin-bottom: 80px; scroll-margin-top: 40px; }
+
+    /* Visual Media Placeholder */
+    .media-box {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background-color: var(--secondary);
+      background-size: cover;
+      background-position: center;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; color: var(--text);
+      overflow: hidden;
+      position: relative;
+    }
+    .media-box::after { content: ''; position: absolute; inset:0; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.1)); pointer-events: none; }
+
+    /* Loader Demo */
+    .loader-demo {
+      width: 40px; height: 40px;
+      background: var(--primary);
+      animation: spin 1s infinite; /* Will be overridden by JS */
+    }
+
+    /* Accessibility focus demo */
+    .focus-trap {
+      padding: 20px; border: 1px dashed var(--muted); border-radius: var(--r-md);
+      display: flex; gap: 10px; align-items: center;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #111; color: #fff; padding: 10px 20px;
+      border-radius: 99px; font-size: 0.85rem; opacity: 0;
+      transform: translateY(10px); transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none; z-index: 9999;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+  </style>
+</head>
+<body>
+
+  <div class="bg-motif" id="bgMotif"></div>
+
+  <div class="wrap">
+    <div class="container">
+      
+      <header style="margin-bottom: 60px;">
+        <span class="kicker" id="metaVersion">v1.0.0</span>
+        <h1 id="conceptName">Design System</h1>
+        <p class="lead" id="brandTension">Tagline goes here</p>
+        
+        <div class="grid">
+          <div class="col-span-8">
+            <div class="chip-group" id="headerChips">
+              </div>
+          </div>
+          <div class="col-span-4" style="text-align: right;">
+            <button class="btn ghost" id="downloadJsonBtn">Get JSON</button>
+            <a href="#prompts" class="btn">View AI Prompts</a>
+          </div>
+        </div>
+
+        <div class="media-box" id="keyVisual" style="margin-top: 40px;">Key Visual</div>
+      </header>
+
+      <main>
+        <section id="principles">
+          <span class="kicker">01. Philosophy</span>
+          <h2>Design Principles</h2>
+          <div class="grid" id="principleGrid">
+            </div>
+        </section>
+
+        <section id="tokens">
+          <span class="kicker">02. Tokens</span>
+          <h2>Color & Typography</h2>
+          
+          <div class="grid">
+            <div class="col-span-6 panel">
+              <h3>Color Palette</h3>
+              <p class="note">Click to copy hex.</p>
+              <div class="swatch-grid" id="colorSwatches" style="margin-top: 20px;"></div>
+            </div>
+
+            <div class="col-span-6 panel">
+              <h3>Typography Scale</h3>
+              <div style="margin-top: 20px;">
+                <div style="border-bottom: 1px solid var(--border); padding-bottom:16px; margin-bottom:16px;">
+                  <span class="note">Display Font</span>
+                  <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; line-height: 1.1;">
+                    The quick brown fox
+                  </div>
+                  <div class="note" id="fontDisplayName">Unknown</div>
+                </div>
+                <div>
+                  <span class="note">Body Font</span>
+                  <div style="font-family: var(--font-body); font-size: 1rem;">
+                    The quick brown fox jumps over the lazy dog. 
+                    Design systems are the infrastructure of creativity.
+                  </div>
+                  <div class="note" id="fontBodyName">Unknown</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="layout">
+          <span class="kicker">03. Layout & Physics</span>
+          <h2>Spacing & Radius</h2>
+          <div class="grid">
+            <div class="col-span-6 panel">
+              <h3>Spacing Rhythm</h3>
+              <div id="spacingBars" style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;"></div>
+            </div>
+            <div class="col-span-6 panel">
+              <h3>Radius Strategy</h3>
+              <div id="radiusDemo" style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap;"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="components">
+          <span class="kicker">04. UI Components</span>
+          <h2>Component Behavior</h2>
+          <div class="grid">
+            <div class="col-span-4 panel">
+              <h3>Buttons</h3>
+              <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <button class="btn">Primary Action</button>
+                <button class="btn secondary">Secondary</button>
+                <button class="btn ghost">Ghost Action</button>
+              </div>
+            </div>
+            <div class="col-span-4 panel">
+              <h3>Card & Elevation</h3>
+              <div class="panel" style="margin-top: 20px; border: 1px solid var(--border);">
+                <div class="media-box" style="height: 100px; margin-bottom: 10px;" id="componentMedia"></div>
+                <div style="font-weight: bold;">Card Title</div>
+                <div class="note">Hover this card to see the defined motion and elevation physics.</div>
+              </div>
+            </div>
+            <div class="col-span-4 panel">
+              <h3>Inputs & Focus</h3>
+              <div style="margin-top: 20px; display: grid; gap: 10px;">
+                <label style="font-size: 0.85rem; font-weight: bold;">Label</label>
+                <input type="text" placeholder="Type here..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); color: var(--text);">
+                <div class="note" style="margin-top:10px;">Focus state uses <code>var(--accent)</code></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="motion">
+          <span class="kicker">05. Motion</span>
+          <h2>Motion Physics</h2>
+          <div class="panel">
+            <div class="grid">
+              <div class="col-span-4">
+                <h3>Easing & Duration</h3>
+                <ul class="note" style="list-style: none; padding: 0;" id="motionValues"></ul>
+              </div>
+              <div class="col-span-8">
+                <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 100px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                  <div class="loader-demo" id="motionDemo1" style="border-radius: var(--r-md);"></div>
+                  <div class="loader-demo" id="motionDemo2" style="border-radius: 50%;"></div>
+                  <div class="loader-demo" id="motionDemo3" style="border-radius: var(--r-sharp);"></div>
+                </div>
+                <div class="note" style="text-align: center; margin-top: 10px;">Animation loop based on configured Tokens</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="human">
+          <span class="kicker">06. Art Direction</span>
+          <h2>Human & Photography</h2>
+          <div class="grid">
+            <div class="col-span-4 panel">
+              <h3>Casting & Vibe</h3>
+              <ul id="humanRules" style="padding-left: 20px; margin-top: 10px; font-size: 0.9rem;"></ul>
+            </div>
+            <div class="col-span-4">
+              <div class="media-box" id="photoSample1">Sample 1</div>
+            </div>
+            <div class="col-span-4">
+              <div class="media-box" id="photoSample2">Sample 2</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="prompts">
+          <span class="kicker">07. Gen AI</span>
+          <h2>Generative Prompts</h2>
+          <p class="lead">クリエイティブの一貫性を保つための、画像生成AI用プロンプトキット。</p>
+          
+          <div class="grid">
+            <div class="col-span-12 panel">
+              <div style="display:flex; justify-content:space-between;">
+                <h3>Base Prompt (Midjourney / Flux)</h3>
+                <button class="copy-btn" onclick="copyText('#promptBase')">Copy</button>
+              </div>
+              <pre id="promptBase">Loading...</pre>
+            </div>
+            <div class="col-span-6 panel">
+              <div style="display:flex; justify-content:space-between;">
+                <h3>Negative Prompt</h3>
+                <button class="copy-btn" onclick="copyText('#promptNeg')">Copy</button>
+              </div>
+              <pre id="promptNeg">Loading...</pre>
+            </div>
+            <div class="col-span-6 panel">
+              <div style="display:flex; justify-content:space-between;">
+                <h3>Governance / Ban list</h3>
+                <span class="note">Do not generate:</span>
+              </div>
+              <ul id="banList" style="margin-top: 10px; font-size: 0.9rem; color: var(--muted);"></ul>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--border); text-align: center;">
+        <p class="note">Generated by Design System Showroom Template</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast">Copied to clipboard</div>
+
+  <script id="designSystemData" type="application/json">
+{
+  "meta": {
+    "version": "2.0.0",
+    "last_updated": "2026-01-08"
+  },
+  "strategy": {
+    "concept_name": "Neo-Pop Memphis",
+    "brand_tension": "幾何学的秩序 (Geometric Order) vs 楽観的混沌 (Optimistic Chaos)",
+    "archetypes": ["The Jester", "The Creator"],
+    "principles": [
+      { "title": "Bold Clarity", "desc": "迷いのないコントラストと太い線。" },
+      { "title": "Constructive Rhythm", "desc": "静止画でも動きを感じさせる配置。" },
+      { "title": "Tactile Flatness", "desc": "擬似的な物質感のあるフラットデザイン。" }
+    ]
+  },
+  "tokens": {
+    "color": {
+      "primary": "#FF3366",
+      "secondary": "#FFCC00",
+      "accent": "#00C2FF",
+      "background": "#FFFDF5",
+      "surface": "#FFFFFF",
+      "text": "#111111",
+      "border": "#000000",
+      "muted": "#555555"
+    },
+    "typography": {
+      "display_font": "\"VAG Rounded\", \"Fredoka\", \"Quicksand\", system-ui",
+      "body_font": "\"Inter\", \"Noto Sans JP\", sans-serif"
+    },
+    "spacing": {
+      "unit": 8,
+      "scale": [4, 8, 16, 24, 32, 64]
+    },
+    "radius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "pill": "9999px"
+    },
+    "elevation": {
+      "low": "2px 2px 0px #000000",
+      "med": "4px 4px 0px #000000",
+      "high": "8px 8px 0px #000000"
+    },
+    "motion": {
+      "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "duration_normal": "300ms",
+      "loader_type": "morph" 
+    }
+  },
+  "assets": {
+    "texture_pattern": "memphis",
+    "key_visual": "https://images.unsplash.com/photo-1505322022379-7c3353ee6291?auto=format&fit=crop&q=80&w=1600",
+    "photo_1": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800",
+    "photo_2": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800"
+  },
+  "guidelines": {
+    "human": [
+      "Gender: All / Age: 18-30",
+      "Pose: Exaggerated, Anti-Gravity",
+      "Fashion: Sporty, Color-block",
+      "Expression: Playful or Deadpan"
+    ],
+    "ai_prompts": {
+      "base": "flat vector art of {subject}, memphis style, bold black outlines, vivid colors #FF3366 #FFCC00 #00C2FF, solid background #FFFDF5, geometric shapes, hard shadows, --no shading gradients",
+      "negative": "shading, gradients, realistic, blur, 3d render, rustic, vintage, noise",
+      "forbidden": ["Gradients", "Drop shadows with blur", "Serif fonts"]
+    }
+  }
+}
+  </script>
+
+  <script>
+    /**
+     * Engine: Design System JSON Parser
+     * JSONデータを読み込み、CSS変数とDOMコンテンツを書き換えます。
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      const dataEl = document.getElementById('designSystemData');
+      if (!dataEl) return;
+
+      const DS = JSON.parse(dataEl.textContent);
+
+      // --- 1. CSS Variables Injection (The "Skin") ---
+      const root = document.documentElement;
+      
+      // Colors
+      const c = DS.tokens.color;
+      if(c) {
+        root.style.setProperty('--primary', c.primary);
+        root.style.setProperty('--secondary', c.secondary);
+        root.style.setProperty('--accent', c.accent);
+        root.style.setProperty('--bg', c.background);
+        root.style.setProperty('--surface', c.surface);
+        root.style.setProperty('--text', c.text);
+        root.style.setProperty('--border', c.border);
+        root.style.setProperty('--muted', c.muted);
+      }
+
+      // Fonts
+      const t = DS.tokens.typography;
+      if(t) {
+        root.style.setProperty('--font-display', t.display_font);
+        root.style.setProperty('--font-body', t.body_font);
+      }
+
+      // Radius
+      const r = DS.tokens.radius;
+      if(r) {
+        if(r.sm) root.style.setProperty('--r-sm', r.sm);
+        if(r.md) root.style.setProperty('--r-md', r.md);
+        if(r.lg) root.style.setProperty('--r-lg', r.lg);
+        if(r.pill) root.style.setProperty('--r-pill', r.pill);
+      }
+
+      // Elevation (Shadows)
+      const e = DS.tokens.elevation;
+      if(e) {
+        if(e.low) root.style.setProperty('--shadow-low', e.low);
+        if(e.med) root.style.setProperty('--shadow-med', e.med);
+        if(e.high) root.style.setProperty('--shadow-high', e.high);
+      }
+
+      // Motion
+      const m = DS.tokens.motion;
+      if(m) {
+        if(m.easing) root.style.setProperty('--ease', m.easing);
+        if(m.easing) root.style.setProperty('--ease-bounce', m.easing); // Reuse for bounce
+        if(m.duration_normal) root.style.setProperty('--t-normal', m.duration_normal);
+      }
+
+      // --- 2. Dynamic Content Rendering (The "Body") ---
+      
+      // Header
+      setText('metaVersion', `System v${DS.meta?.version || '1.0'}`);
+      setText('conceptName', DS.strategy?.concept_name);
+      setText('brandTension', DS.strategy?.brand_tension);
+      
+      // Chips (Archetypes)
+      const chipsContainer = document.getElementById('headerChips');
+      (DS.strategy?.archetypes || []).forEach(arch => {
+        const span = document.createElement('span');
+        span.className = 'chip primary';
+        span.textContent = arch;
+        chipsContainer.appendChild(span);
+      });
+
+      // Key Visual
+      setBgImage('keyVisual', DS.assets?.key_visual);
+
+      // Principles Cards
+      const principlesGrid = document.getElementById('principleGrid');
+      (DS.strategy?.principles || []).forEach((p, index) => {
+        const div = document.createElement('div');
+        div.className = 'col-span-4 panel';
+        div.innerHTML = `<span class="kicker">0${index+1}</span><h3>${p.title}</h3><p class="note">${p.desc}</p>`;
+        principlesGrid.appendChild(div);
+      });
+
+      // Color Swatches
+      const swatchGrid = document.getElementById('colorSwatches');
+      if(c) {
+        Object.entries(c).forEach(([key, val]) => {
+          const div = document.createElement('div');
+          div.className = 'swatch';
+          div.onclick = () => copyTextStr(val);
+          div.innerHTML = `
+            <div class="swatch-color" style="background:${val}"></div>
+            <div class="swatch-info">
+              <span class="swatch-name">${key}</span>
+              <span style="opacity:0.6">${val}</span>
+            </div>
+          `;
+          swatchGrid.appendChild(div);
+        });
+      }
+
+      // Font Names
+      setText('fontDisplayName', t?.display_font);
+      setText('fontBodyName', t?.body_font);
+
+      // Spacing Ladder
+      const spacingBars = document.getElementById('spacingBars');
+      const scales = DS.tokens?.spacing?.scale || [4, 8, 16, 24, 32];
+      scales.forEach(px => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.gap = '10px';
+        row.innerHTML = `
+          <div style="width: ${px}px; height: 16px; background: var(--secondary); border-radius:2px;"></div>
+          <span class="note">${px}px</span>
+        `;
+        spacingBars.appendChild(row);
+      });
+
+      // Radius Demo
+      const rDemo = document.getElementById('radiusDemo');
+      ['sm', 'md', 'lg', 'pill'].forEach(k => {
+        const box = document.createElement('div');
+        box.style.width = '60px'; box.style.height = '60px';
+        box.style.border = '2px solid var(--border)';
+        box.style.background = 'var(--surface)';
+        box.style.display = 'flex'; box.style.alignItems='center'; box.style.justifyContent='center';
+        box.style.fontSize = '10px';
+        // Get variable name from map or default
+        const varName = `--r-${k}`;
+        box.style.borderRadius = `var(${varName})`;
+        box.textContent = k;
+        rDemo.appendChild(box);
+      });
+
+      // Motion Values
+      const mList = document.getElementById('motionValues');
+      if(m) {
+        Object.entries(m).forEach(([k,v]) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${k}:</strong> ${v}`;
+          mList.appendChild(li);
+        });
+        
+        // Setup Animation Demo
+        const demoStyle = `transform 1s infinite alternate var(--ease-bounce)`;
+        document.querySelectorAll('.loader-demo').forEach((el, i) => {
+          el.style.animation = `bounce${i} 1.2s infinite alternate var(--ease)`;
+        });
+        
+        // Inject keyframes dynamically for the specific bounce
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+          @keyframes bounce0 { from { transform: scale(1); } to { transform: scale(1.4) rotate(10deg); } }
+          @keyframes bounce1 { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+          @keyframes bounce2 { from { opacity: 0.5; } to { opacity: 1; transform: translateX(20px); } }
+        `;
+        document.head.appendChild(styleSheet);
+      }
+
+      // Human / Guidelines
+      const hList = document.getElementById('humanRules');
+      (DS.guidelines?.human || []).forEach(rule => {
+        const li = document.createElement('li');
+        li.textContent = rule;
+        hList.appendChild(li);
+      });
+      setBgImage('photoSample1', DS.assets?.photo_1);
+      setBgImage('photoSample2', DS.assets?.photo_2);
+      setBgImage('componentMedia', DS.assets?.photo_1);
+
+      // AI Prompts
+      setText('promptBase', DS.guidelines?.ai_prompts?.base || 'N/A');
+      setText('promptNeg', DS.guidelines?.ai_prompts?.negative || 'N/A');
+      const bList = document.getElementById('banList');
+      (DS.guidelines?.ai_prompts?.forbidden || []).forEach(ban => {
+        const li = document.createElement('li');
+        li.textContent = ban;
+        bList.appendChild(li);
+      });
+
+      // --- 3. Dynamic Background Generation (The "Vibe") ---
+      generateBackground(DS.assets?.texture_pattern, c?.primary, c?.secondary, c?.border);
+
+      // Setup Download JSON Button
+      document.getElementById('downloadJsonBtn').onclick = () => {
+        copyTextStr(JSON.stringify(DS, null, 2));
+        showToast("JSON copied to clipboard");
+      };
+    });
+
+    // Helpers
+    function setText(id, txt) {
+      const el = document.getElementById(id);
+      if(el && txt) el.textContent = txt;
+    }
+    function setBgImage(id, url) {
+      const el = document.getElementById(id);
+      if(el && url) {
+        el.style.backgroundImage = `url('${url}')`;
+        el.textContent = ''; // Remove placeholder text
+      }
+    }
+    function copyText(selector) {
+      const el = document.querySelector(selector);
+      if(el) copyTextStr(el.textContent);
+    }
+    function copyTextStr(str) {
+      navigator.clipboard.writeText(str).then(() => showToast());
+    }
+    function showToast(msg = "Copied to clipboard") {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    // Pattern Generator
+    function generateBackground(type, primary, secondary, border) {
+      const bgEl = document.getElementById('bgMotif');
+      let svg = '';
+      
+      const col1 = encodeURIComponent(primary || '#000');
+      const col2 = encodeURIComponent(secondary || '#ccc');
+      const str = encodeURIComponent(border || '#000');
+
+      if (type === 'memphis') {
+        svg = `data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.2'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='${str}' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E`;
+      } else if (type === 'dots') {
+        svg = `data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='2' fill='${col2}'/%3E%3C/svg%3E`;
+      } else if (type === 'grid') {
+        svg = `data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='${str}' fill-opacity='0.1'/%3E%3C/svg%3E`;
+      }
+      
+      if(svg) bgEl.style.backgroundImage = `url("${svg}")`;
+    }
+  </script>
+</body>
+</html>
