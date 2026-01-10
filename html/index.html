@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Systems Gallery</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600&family=Cinzel:wght@400;700&family=Fredoka:wght@600;700&family=Inter:wght@400;700;900&family=Jost:wght@700;800;900&family=Share+Tech+Mono&family=UnifrakturMaguntia&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            color: #111;
+            margin: 0;
+            padding: 60px 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ページタイトルの強化 */
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 8rem;
+            font-weight: 900;
+            margin-bottom: 120px; /* ここを80pxから120pxに広げました */
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+            color: #000;
+            text-transform: uppercase;
+            border-bottom: 4px solid #000;
+            padding-bottom: 30px; /* 線と文字の間隔も少し調整 */
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 40px; /* さらに念のため上部に余白を追加 */
+        }
+
+        /* カードデザイン */
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e5e5;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
+            border-color: #ccc;
+            z-index: 10;
+        }
+
+        /* KV表示エリア (16:9) */
+        .card-image-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .card-image-container img,
+        .card-image-container svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-image-container img,
+        .card:hover .card-image-container svg {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background: #fff;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin: 0;
+            line-height: 1.2;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Design<br>Systems.</h1>
+
+        <div class="gallery-grid">
+            
+            <a href="pop/pop.html" class="card">
+                <div class="card-image-container">
+                    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+                        <rect x="0" y="0" width="400" height="300" fill="#FFFDF5"/>
+                        <circle cx="300" cy="100" r="80" fill="#FF3366" stroke="black" stroke-width="3"/>
+                        <rect x="50" y="180" width="120" height="120" fill="#FFCC00" stroke="black" stroke-width="3" transform="rotate(-10 110 240)"/>
+                        <path d="M300 250 L350 200 L400 250" fill="#00C2FF" stroke="black" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <h2 class="card-title" style="font-family: 'Fredoka', sans-serif; font-weight: 700; color: #FF3366;">
+                        Pop Memphis Flat
+                    </h2>
+                </div>
+            </a>
+
+            <a href="regalia/RF.html" class="card">
+                <div class="card-image-container" style="background: #050505;">
+                    <img src="regalia/rf_kv.jpg" alt="REGALIA FLUX KV" loading="lazy">
+                </div>
+                <div class="card-content" style="background: #0F0F12; border-top: 1px solid #333;">
+                    <h2 class="card-title" style="font-family: 'Cinzel', serif; font-weight: 400; color: #D4AF37; letter-spacing: -0.02em;">
+                        REGALIA FLUX
+                    </h2>
+                </div>
+            </a>
+
+            <a href="retro/retro.html" class="card">
+                <div class="card-image-container">
+                    <img src="retro/retro_kv.jpg" alt="Retro Modern Revival KV" loading="lazy">
+                </div>
+                <div class="card-content" style="background: #F4F1EA;">
+                    <h2 class="card-title" style="font-family: 'Bodoni Moda', serif; font-weight: 600; color: #2B2B2B;">
+                        Retro Modern Revival
+                    </h2>
+                </div>
+            </a>
+
+            <a href="APC/APC.html" class="card">
+                <div class="card-image-container">
+                    <img src="APC/APC_kv.png" alt="Avant-Pop Couture KV" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h2 class="card-title" style="font-family: 'Jost', sans-serif; font-weight: 900; text-transform: uppercase; color: #0033CC; letter-spacing: -0.04em;">
+                        AVANT-POP_COUTURE
+                    </h2>
+                </div>
+            </a>
+
+            <a href="dark/DSC.html" class="card">
+                <div class="card-image-container" style="background: #110F12;">
+                    <img src="dark/DSC_kv.png" alt="DARK_SUGAR_CULT KV" loading="lazy">
+                </div>
+                <div class="card-content" style="background: #110F12; border-top: 1px solid #FF55A3;">
+                    <h2 class="card-title" style="font-family: 'UnifrakturMaguntia', serif; color: #F4F1EA; text-shadow: 1px 0 0 #FF55A3;">
+                        DARK_SUGAR_CULT
+                    </h2>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
