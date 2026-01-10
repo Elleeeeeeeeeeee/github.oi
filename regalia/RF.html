@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REGALIA FLUX — v1.2.3</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Palette */
+      --brand-primary:#D4AF37;   /* Sovereign Gold */
+      --text-primary:#EAEAEA;    /* Off-White */
+      --text-secondary:#AAAAAA;
+
+      --bg-main:#050505;         /* Obsidian Black */
+      --surface:#16161A;         /* Surface */
+
+      /* Physics */
+      --radius-md:20px;
+      --radius-lg:80px;
+      --radius-pill:9999px;
+
+      /* Deep Ambient Shadow */
+      --shadow-surface:
+        0 20px 50px -10px rgba(0,0,0,0.9), 
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 0 20px rgba(0,0,0,0.5);
+        
+      --shadow-hover:
+        0 30px 60px -10px rgba(0,0,0,1), 
+        0 0 30px rgba(212, 175, 55, 0.2),
+        inset 0 1px 0 rgba(212, 175, 55, 0.3);
+
+      /* Motion: Viscosity */
+      --ease-fluid:cubic-bezier(0.19, 1, 0.22, 1);
+      --duration-normal:1.2s;
+    }
+
+    *{box-sizing:border-box;}
+
+    /* =========================================================
+       THEME: REGALIA FLUX
+       ========================================================= */
+    body.theme-regalia{
+      font-family:'Inter', 'Noto Sans JP', sans-serif;
+      background-color:var(--bg-main);
+      color:var(--text-primary);
+      margin:0;
+      overflow-x:hidden;
+      width:100%;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:geometricPrecision;
+
+      /* Obsidian Glass Texture */
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+        radial-gradient(circle at 50% 0%, #1a1a1d 0%, #050505 80%);
+      background-attachment: fixed;
+    }
+
+    /* Typography */
+    .display-font{
+      font-family:'Cinzel', serif;
+      font-weight:400;
+      letter-spacing:-0.03em;
+      line-height:1.05;
+      text-transform:uppercase;
+    }
+
+    .container-custom{
+      width:100%;
+      max-width:1440px;
+      margin:0 auto;
+      padding:0 40px;
+    }
+
+    /* Layout Utilities */
+    .equal-height-grid{display:grid; grid-auto-rows:1fr;}
+    p{margin:0;}
+    .prose p + p{margin-top:2em;}
+
+    /* =========================================================
+       MOTION: Fluid Authority
+       ========================================================= */
+    .interactive-element{
+      transition:transform var(--duration-normal) var(--ease-fluid), 
+                 box-shadow var(--duration-normal) var(--ease-fluid),
+                 background-color var(--duration-normal) var(--ease-fluid);
+      will-change:transform, box-shadow;
+      position:relative;
+      border:none; 
+      background-color:var(--surface);
+      border-radius:var(--radius-md);
+      box-shadow:var(--shadow-surface);
+    }
+
+    .interactive-element:hover{
+      z-index:10;
+      transform:translateY(-4px);
+      box-shadow:var(--shadow-hover);
+    }
+
+    .color-swatch.interactive-element:hover { transform: scale(1.02); }
+
+    /* Cards */
+    .regalia-card{
+      padding:32px;
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      position:relative;
+      background-color:var(--surface);
+      border-radius:20px 80px 20px 20px; 
+    }
+
+    /* Buttons */
+    .btn-regalia{
+      font-family:'Cinzel', serif;
+      font-weight:700;
+      font-size:14px;
+      letter-spacing:0.1em;
+      padding:20px 48px;
+      min-height:60px;
+      border:none;
+      cursor:pointer;
+      user-select:none;
+      background:#1F1F24;
+      color:var(--brand-primary);
+      border-radius:var(--radius-pill);
+      box-shadow:var(--shadow-surface);
+      transition:all var(--duration-normal) var(--ease-fluid);
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .btn-secondary{
+      background:transparent;
+      box-shadow:inset 0 0 0 1px rgba(212,175,55,0.3), inset 0 0 10px rgba(212,175,55,0.1);
+      color:rgba(255,255,255,0.8);
+    }
+
+    .btn-regalia:hover{
+      transform:scale(1.05);
+      color:#fff;
+      box-shadow:0 0 40px rgba(212, 175, 55, 0.3);
+      background:linear-gradient(135deg, #2A2A30, #1F1F24);
+    }
+    .btn-regalia:disabled{
+      opacity:0.3; filter:grayscale(100%); cursor:not-allowed; box-shadow:none;
+    }
+
+    /* Header */
+    .header-surface{
+      background:rgba(5, 5, 5, 0.85);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Section Label */
+    .section-label{
+      font-family:'Cinzel', serif;
+      font-size:12px;
+      font-weight:400;
+      letter-spacing:0.2em;
+      color:var(--brand-primary);
+      display:block;
+      margin-bottom:32px;
+      position: relative;
+      padding-left:40px;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+    .section-label::before{
+      content:""; position:absolute; left:0; top:50%; width:30px; height:1px;
+      background:var(--brand-primary);
+      box-shadow: 0 0 5px var(--brand-primary);
+    }
+
+    /* Media Placeholder (16:9) */
+    .media-placeholder{
+      background:#08080A;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      position:relative;
+      border-radius:var(--radius-md);
+    }
+    .media-placeholder img{
+      width:100%;height:100%;object-fit:cover;
+      opacity:0.7;
+      transition:opacity var(--duration-normal) var(--ease-fluid);
+    }
+    .interactive-element:hover .media-placeholder img{ opacity:1; }
+
+    /* Inputs */
+    .regalia-input-container{position:relative; width:100%;}
+    .regalia-input{
+      width:100%;
+      background:transparent;
+      border:none;
+      border-bottom:1px solid #444;
+      border-radius:0;
+      padding:16px 0;
+      font-family:'Inter', sans-serif;
+      font-size:16px;
+      font-weight:300;
+      color:var(--text-primary);
+      outline:none;
+      transition:border-color 0.8s ease;
+    }
+    .regalia-input::placeholder{color:var(--text-secondary);}
+    .input-focus-line{
+      position:absolute; bottom:0; left:50%; width:0; height:1px;
+      background:var(--brand-primary);
+      transition:width var(--duration-normal) var(--ease-fluid);
+      transform:translateX(-50%);
+      box-shadow:0 0 15px var(--brand-primary);
+    }
+    .regalia-input:focus ~ .input-focus-line{ width:100%; }
+
+    /* Animations */
+    @keyframes fluid-morph {
+      0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(0deg); }
+      50% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; transform: rotate(180deg); }
+      100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(360deg); }
+    }
+    @keyframes heavy-drop {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(20px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes magnetic-shift {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(15px); }
+      100% { transform: translateX(0); }
+    }
+    
+    .demo-fluid {
+      width:40px; height:40px; background:var(--brand-primary);
+      animation: fluid-morph 6s linear infinite;
+      box-shadow:0 0 30px rgba(212,175,55,0.5);
+    }
+    .demo-drop {
+      width:30px; height:30px; border-radius:50%; background:#333;
+      animation: heavy-drop 3s var(--ease-fluid) infinite;
+      border:1px solid rgba(255,255,255,0.1);
+    }
+    .demo-shift {
+      width:60px; height:10px; border-radius:10px; background:#555;
+      animation: magnetic-shift 4s var(--ease-fluid) infinite;
+    }
+
+    /* Icons */
+    .ds-icon{width:32px;height:32px;display:inline-block;vertical-align:middle; fill:none; stroke:var(--text-primary); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;}
+
+    /* Swatches */
+    .color-swatch{
+      height:120px;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      padding:24px; cursor:pointer;
+      border-radius:var(--radius-pill);
+    }
+    .swatch-label{
+      font-family:'Inter',sans-serif; font-size:10px; font-weight:500;
+      color:rgba(255,255,255,0.6); margin-top:8px; letter-spacing:0.1em;
+    }
+
+    /* Toast */
+    #toast{
+      position:fixed; bottom:40px; right:40px;
+      background:rgba(20,20,25,0.95); color:var(--brand-primary);
+      padding:20px 40px; border-radius:var(--radius-pill);
+      font-family:'Cinzel', serif; font-size:12px; letter-spacing:0.1em;
+      z-index:10000; opacity:0;
+      transform:translateY(30px);
+      transition:all var(--duration-normal) var(--ease-fluid);
+      pointer-events:none;
+      box-shadow:0 20px 50px -10px rgba(0,0,0,1);
+      border:1px solid rgba(212,175,55,0.2);
+    }
+    #toast.show{opacity:1; transform:translateY(0);}
+    
+    header, main, section, .container-custom{position:relative;z-index:1;}
+  </style>
+</head>
+
+<body class="theme-regalia">
+  <div id="toast">COPIED TO CLIPBOARD</div>
+
+  <header class="sticky top-0 w-full z-50 header-surface">
+    <div class="container-custom py-6 flex justify-between items-center">
+      <div class="flex items-center gap-6">
+        <svg class="ds-icon" viewBox="0 0 32 32" style="width:40px; height:40px; stroke:var(--brand-primary);">
+          <path d="M16 2 A 14 14 0 0 1 30 16" />
+          <path d="M16 30 A 14 14 0 0 1 2 16" />
+          <circle cx="16" cy="16" r="4" fill="var(--brand-primary)" stroke="none"/>
+        </svg>
+        <h1 class="display-font text-xl tracking-widest text-[color:var(--text-primary)]">
+          REGALIA <span style="color:var(--brand-primary)">FLUX</span>
+        </h1>
+      </div>
+      <button class="btn-regalia" onclick="copyFullYaml()" style="min-height:48px; padding:12px 32px; font-size:10px;">
+        COPY PROMPT
+      </button>
+    </div>
+  </header>
+
+  <section class="container-custom pt-24">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-16 mb-40 items-center">
+      
+      <div class="md:col-span-6 z-10">
+        <h2 class="display-font text-6xl md:text-8xl leading-none mb-8 text-[color:var(--text-primary)]">
+          FLUID<br>
+          <span style="color:var(--brand-primary); text-shadow:0 0 40px rgba(212,175,55,0.4);">AUTHORITY</span>
+        </h2>
+        <div class="prose max-w-lg">
+          <p class="text-lg font-light leading-relaxed text-[color:var(--text-secondary)]">
+            停止することなく、岩のように重厚に動く。<br>
+            機能美が極限まで洗練された有機的フォルム。<br>
+            端点を感じさせないメビウスの構造。
+          </p>
+        </div>
+      </div>
+
+      <div class="md:col-span-6 flex justify-center relative z-0">
+        <div class="media-placeholder interactive-element aspect-video w-full regalia-card p-0 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+          <img src="rf_kv.jpg" alt="High Fashion Model in Obsidian Space" onerror="this.style.display='none'">
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+             <div class="loader-fluid mb-8"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+      <div class="interactive-element regalia-card">
+        <h4 class="display-font text-lg text-[color:var(--brand-primary)] mb-4">Fluid Authority</h4>
+        <p class="text-sm font-light text-[color:var(--text-secondary)] leading-relaxed">
+          アニメーション曲線は honey-like viscosity (0.19, 1, 0.22, 1) に固定。慣性減衰係数を高く設定。
+        </p>
+      </div>
+      <div class="interactive-element regalia-card">
+        <h4 class="display-font text-lg text-[color:var(--brand-primary)] mb-4">Ruthless Elegance</h4>
+        <p class="text-sm font-light text-[color:var(--text-secondary)] leading-relaxed">
+          装飾線（Border）を廃止。光の隆起（Inner Shadow / Glow）のみで階層を定義する。
+        </p>
+      </div>
+      <div class="interactive-element regalia-card">
+        <h4 class="display-font text-lg text-[color:var(--brand-primary)] mb-4">Infinite Loop</h4>
+        <p class="text-sm font-light text-[color:var(--text-secondary)] leading-relaxed">
+          端点を感じさせないメビウスの構造。リストはStart/Endの境界線を表示しない。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-custom pb-40">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-20 items-start">
+      
+      <div class="md:col-span-5 space-y-32 ds-left">
+
+        <section>
+          <span class="section-label">01 Color System</span>
+          <div class="grid grid-cols-1 gap-8">
+            <div class="interactive-element color-swatch"
+                 style="background:linear-gradient(135deg, #D4AF37, #B48F17);" onclick="copyText('#D4AF37')">
+              <span class="display-font text-2xl text-[#050505]">Sovereign Gold</span>
+              <span class="swatch-label" style="color:#050505;">#D4AF37</span>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-8">
+              <div class="interactive-element color-swatch" style="background:#1F1F24;" onclick="copyText('#0F0F12')">
+                <span class="swatch-label">Surface #0F0F12</span>
+              </div>
+              <div class="interactive-element color-swatch" style="background:#0A0A0C; border:1px solid #222;" onclick="copyText('#050505')">
+                <span class="swatch-label">Obsidian #050505</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">02 Typography</span>
+          <div class="interactive-element regalia-card space-y-12">
+            <div>
+              <p class="text-xs text-[color:var(--brand-primary)] mb-4 tracking-widest uppercase">Display</p>
+              <h4 class="display-font text-5xl text-[color:var(--text-primary)]">
+                The Sovereign<br>Sculptor
+              </h4>
+              <p class="text-xs text-[color:var(--text-secondary)] mt-4">
+                Cinzel / Regular / -0.03em / Line-height 1.05
+              </p>
+            </div>
+            <div class="pt-8 border-t border-[rgba(255,255,255,0.05)]">
+              <p class="text-xs text-[color:var(--brand-primary)] mb-4 tracking-widest uppercase">Body</p>
+              <p class="text-sm font-light leading-loose text-[color:var(--text-primary)]">
+                Commanding & Seductive. Avoid friendly patterns. Use fluid typography scaling based on viewport width.
+              </p>
+              <p class="text-xs text-[color:var(--text-secondary)] mt-4">
+                Inter / Light (300) / Line-height 1.8
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">03 Iconography</span>
+          <div class="grid grid-cols-5 gap-4">
+            <div class="aspect-square interactive-element flex items-center justify-center bg-[color:var(--surface)]" style="border-radius:50%;">
+              <svg class="ds-icon" viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /> 
+                <path d="M16 7a4 4 0 1 1-1 0" /> 
+              </svg>
+            </div>
+            <div class="aspect-square interactive-element flex items-center justify-center bg-[color:var(--surface)]" style="border-radius:50%;">
+              <svg class="ds-icon" viewBox="0 0 24 24">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke-dasharray="50" stroke-dashoffset="10" />
+              </svg>
+            </div>
+            <div class="aspect-square interactive-element flex items-center justify-center bg-[color:var(--surface)]" style="border-radius:50%;">
+              <svg class="ds-icon" viewBox="0 0 24 24">
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                <path d="M10 20a1 1 0 1 1-1 0" />
+              </svg>
+            </div>
+            <div class="aspect-square interactive-element flex items-center justify-center bg-[color:var(--surface)]" style="border-radius:50%;">
+              <svg class="ds-icon" viewBox="0 0 24 24">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
+            </div>
+            <div class="aspect-square interactive-element flex items-center justify-center bg-[color:var(--surface)]" style="border-radius:50%;">
+              <svg class="ds-icon" viewBox="0 0 24 24">
+                <path d="M12 22a10 10 0 1 1 5-1.3" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
+              </svg>
+            </div>
+          </div>
+          <p class="text-xs text-[color:var(--text-secondary)] mt-6 font-light">
+            Rule: Open Shapes (必ず一箇所を開放). No Straight Lines (曲率を持たせる).
+          </p>
+        </section>
+
+        <section class="interactive-element regalia-card border-l-2 border-[color:var(--brand-primary)]" style="border-left:2px solid var(--brand-primary);">
+          <h3 class="display-font text-lg text-[color:var(--brand-primary)] mb-6">Forbidden Rules</h3>
+          <ul class="text-sm space-y-4 text-[color:var(--text-secondary)] font-light">
+            <li class="flex gap-4 items-center">
+              <span class="text-[color:var(--brand-primary)]">✕</span> 
+              Do not use Standard System Fonts
+            </li>
+            <li class="flex gap-4 items-center">
+              <span class="text-[color:var(--brand-primary)]">✕</span> 
+              No Pure White (#FFFFFF) Backgrounds
+            </li>
+            <li class="flex gap-4 items-center">
+              <span class="text-[color:var(--brand-primary)]">✕</span> 
+              No animations faster than 400ms
+            </li>
+          </ul>
+        </section>
+
+      </div>
+
+      <div class="md:col-span-7 space-y-32 ds-right">
+
+        <section>
+          <span class="section-label">04 Human & Fashion</span>
+          <div class="space-y-12">
+            <div class="grid grid-cols-2 gap-8">
+              
+              <div class="media-placeholder interactive-element aspect-video regalia-card p-0">
+                <img src="rf_fs01.jpg" alt="Porcelain Skin" onerror="this.style.display='none'">
+                <div class="absolute bottom-6 left-6 text-xs tracking-widest text-[color:var(--brand-primary)]">PORCELAIN</div>
+              </div>
+
+              <div class="media-placeholder interactive-element aspect-video regalia-card p-0">
+                <img src="rf_fs02.jpg" alt="Latex Texture" onerror="this.style.display='none'">
+                <div class="absolute bottom-6 left-6 text-xs tracking-widest text-[color:var(--brand-primary)]">LIQUID LATEX</div>
+              </div>
+
+              <div class="media-placeholder interactive-element aspect-video regalia-card p-0">
+                <img src="rf_g01.jpg" alt="Low Angle Shot" onerror="this.style.display='none'">
+                <div class="absolute bottom-6 left-6 text-xs tracking-widest text-[color:var(--brand-primary)]">LOW ANGLE</div>
+              </div>
+
+              <div class="media-placeholder interactive-element aspect-video regalia-card p-0">
+                <img src="rf_g02.jpg" alt="Chiaroscuro Lighting" onerror="this.style.display='none'">
+                <div class="absolute bottom-6 left-6 text-xs tracking-widest text-[color:var(--brand-primary)]">CHIAROSCURO</div>
+              </div>
+
+            </div>
+            <p class="text-sm font-light text-[color:var(--text-secondary)]">
+              Model: Fluid / Androgynous. <br>
+              Setting: Infinite Dark Studio. 
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">05 UI Component & Motion</span>
+
+          <div class="space-y-20">
+            
+            <div class="space-y-6">
+              <p class="text-xs text-[color:var(--brand-primary)] tracking-widest uppercase">Interactive Elements</p>
+              <div class="interactive-element regalia-card flex flex-wrap gap-8 items-center justify-center min-h-[200px]">
+                <button class="btn-regalia">PRIMARY ACTION</button>
+                <button class="btn-regalia btn-secondary">SECONDARY</button>
+                <button class="btn-regalia" disabled>DISABLED</button>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <p class="text-xs text-[color:var(--brand-primary)] tracking-widest uppercase">Motion Physics</p>
+              <div class="interactive-element regalia-card bg-transparent">
+                <div class="grid grid-cols-3 gap-8">
+                  
+                  <div class="flex flex-col items-center gap-6">
+                    <div class="h-20 flex items-center justify-center">
+                      <div class="demo-fluid"></div>
+                    </div>
+                    <span class="text-xs font-light tracking-widest uppercase text-[color:var(--text-secondary)]">Fluid Morph</span>
+                  </div>
+
+                  <div class="flex flex-col items-center gap-6">
+                    <div class="h-20 flex items-center justify-center">
+                      <div class="demo-drop"></div>
+                    </div>
+                    <span class="text-xs font-light tracking-widest uppercase text-[color:var(--text-secondary)]">Heavy Drop</span>
+                  </div>
+
+                  <div class="flex flex-col items-center gap-6">
+                    <div class="h-20 flex items-center justify-center">
+                      <div class="demo-shift"></div>
+                    </div>
+                    <span class="text-xs font-light tracking-widest uppercase text-[color:var(--text-secondary)]">Magnetic Shift</span>
+                  </div>
+
+                </div>
+                <div class="text-center mt-8 pt-6 border-t border-[rgba(255,255,255,0.05)]">
+                  <p class="text-xs font-mono text-[color:var(--brand-primary)]">
+                    EASING: cubic-bezier(0.19, 1, 0.22, 1)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 equal-height-grid">
+              
+              <div class="interactive-element regalia-card">
+                <div class="w-full h-40 bg-[color:var(--bg-main)] mb-8 flex items-center justify-center overflow-hidden rounded-[10px_40px_10px_10px] shadow-inner">
+                   <div class="loader-fluid" style="width:20px; height:20px;"></div>
+                </div>
+                <h5 class="display-font text-xl mb-4">Layer 2</h5>
+                <p class="text-sm font-light text-[color:var(--text-secondary)]">
+                  Magnetic Hover. Asymmetric Radius (Top-Right 80px).
+                </p>
+              </div>
+
+              <div class="interactive-element regalia-card justify-center gap-8">
+                 <h5 class="display-font text-xl">AUTHENTICATION</h5>
+                 <div class="regalia-input-container">
+                    <input type="text" placeholder="Identity Code" class="regalia-input" />
+                    <div class="input-focus-line"></div>
+                 </div>
+                 <div class="flex justify-end">
+                   <span class="text-xs tracking-widest text-[color:var(--brand-primary)]">REFINING...</span>
+                 </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const systemYaml = `design_system:
+  meta:
+    version: "1.2.0"
+    last_updated: "2026-01-09"
+    concept: "REGALIA FLUX"
+
+  strategy:
+    concept_name: "REGALIA FLUX (レガリア・フラックス)"
+    archetype: "The Sovereign Sculptor (支配する彫刻家)"
+    brand_tension: "Fluidity (流動性) vs Mass (質量)"
+
+    design_principles:
+      - name: "Fluid Authority (流体的な権威)"
+        intent: "停止することなく、岩のように重厚に動く。"
+        physical_translation: "アニメーション曲線を cubic-bezier(0.19, 1, 0.22, 1) に固定し、慣性減衰係数を高く設定する。"
+      - name: "Ruthless Elegance (冷徹な優雅さ)"
+        intent: "機能美が極限まで洗練された有機的フォルム。"
+        physical_translation: "装飾線（Border）を廃止し、光の隆起（Inner Shadow / Glow）のみで階層を定義する。"
+      - name: "Infinite Loop (無限の循環)"
+        intent: "端点を感じさせないメビウスの構造。"
+        physical_translation: "全てのリスト・カルーセルはループ構造とし、Start/End の境界線を表示しない。"
+
+    target_audience:
+      segment: "Global Ultra-High-Net-Worth Individuals (超富裕層)"
+      price_range: "Masterpiece Pricing (時価・資産価値基準)"
+      values: ["希少性", "支配", "永遠性", "身体的拡張"]
+
+    accessibility:
+      contrast_ratio_target: "AAA (7.0:1) 優先だが、演出意図により AA (4.5:1) を許容"
+      minimum_touch_target_px: 48
+      focus_visibility_rule: "要素自体の輝度上昇 (Brightness +20%) および拡散光 (Drop Shadow Spread)"
+
+  design_tokens:
+    color:
+      brand_primary: "#D4AF37"
+      text_primary: "#EAEAEA"
+    spacing:
+      base_unit_px: 12
+      logic: "Golden Ratio (1.618)"
+      xs: 12
+      sm: 19
+      md: 31
+      lg: 50
+      xl: 81
+      xxl: 131
+    radius:
+      sm: 4
+      md: 20
+      lg: 80
+      pill: 9999
+    motion:
+      fast_ms: 400
+      normal_ms: 800
+      slow_ms: 1600
+
+  color_system:
+    primary:
+      name: "Sovereign Gold"
+      values: { hex: "#D4AF37", rgb: "212, 175, 55", hsl: "46, 65%, 52%" }
+      luminance_target: "0.45"
+      usage: "CTA, Key Typography, Interaction Focus"
+
+    background:
+      main: { hex: "#050505", rgb: "5, 5, 5", hsl: "0, 0%, 2%" }
+      surface: { hex: "#0F0F12", rgb: "15, 15, 18", hsl: "240, 9%, 6%" }
+      texture: "Obsidian Glass (Roughness: 0.05, Metalness: 0.9)"
+
+    semantic:
+      success: { hex: "#00E676", rgb: "0, 230, 118", hsl: "150, 100%, 45%" }
+      error: { hex: "#FF1744", rgb: "255, 23, 68", hsl: "348, 100%, 54%" }
+      warning: { hex: "#FFC400", rgb: "255, 196, 0", hsl: "46, 100%, 50%" }
+      text:
+        primary: { hex: "#EAEAEA" }
+        secondary: { hex: "#888888" }
+
+  typography:
+    scale:
+      base_px: 16
+      ratio: 1.414
+    display:
+      family: "Custom Didone / Serif"
+      weight: 400
+      letter_spacing_em: -0.03
+      line_height_ratio: 1.05
+      intent: "リガチャ（合字）を強制適用し、接触判定を持つ文字組とする"
+    body:
+      family: "Geometric Sans Serif"
+      weight: 300
+      line_height_ratio: 1.8
+      readability_rules:
+        - "段落間のマージンは文字サイズの2倍とする"
+        - "行長は全角35文字以内とし、余白を優先する"
+    copy_writing:
+      tone: "Commanding & Seductive (断定と誘惑)"
+      forbidden_patterns: ["お手頃", "フレンドリー", "簡単", "カジュアル", "コスパ", "クリックしてください"]
+
+  layout:
+    grid:
+      columns: 12
+      gutter_px: 24
+      margin_px: "Fluid (Min 32px - Max 12vw)"
+    spacing_logic: "Negative Space Dominance (コンテンツ面積率 30%以下)"
+    responsive:
+      breakpoints:
+        mobile: { min: 0, max: 767 }
+        tablet: { min: 768, max: 1199 }
+        desktop: { min: 1200 }
+      behavior_rules:
+        typography_scaling: "Viewport Width Based (clamp関数使用)"
+        column_collapse: "Stack vertically but maintain aspect ratios"
+
+  ui_component_library:
+    global_states: [default, hover, active, focus, disabled]
+
+    buttons:
+      shape_rule: "Stadium / Pill Shape (Fully Rounded)"
+      padding_scale: ["Horizontal: 48px", "Vertical: 24px"]
+      states_behavior:
+        hover: "Scale 1.05, Inner Glow Intensity +30%"
+        active: "Scale 0.98, Ripple Effect (Slow)"
+        disabled: "Opacity 0.3, Grayscale"
+
+    cards:
+      elevation_level: "Layer 2"
+      interaction_physics: "Magnetic Hover (カーソル追従範囲 20px)"
+      shape_rule: "Top-Right Radius 80px, Others 20px (Asymmetric)"
+
+    forms:
+      input_style: "Bottom Border 1px Solid #333 -> Focus: Center-out Gold Animation"
+      validation_tone: "Silent Pulse (テキストではなくフィールドの発光で伝達)"
+
+  ui_physics:
+    shape:
+      base_radius_px: 20
+      logic: "G2 Continuity (曲率連続性) を持つ角丸処理"
+    elevation:
+      shadow_model: "Deep Ambient"
+      layers:
+        - "0 10px 30px -10px rgba(0,0,0,0.9)"
+        - "0 0 20px rgba(212, 175, 55, 0.15)"
+    motion:
+      easing_curve: "cubic-bezier(0.19, 1, 0.22, 1)"
+      duration_reference: "800ms (Base)"
+      philosophy: "Viscosity (粘性係数高め、水ではなく蜂蜜の挙動)"
+
+  loading_motion:
+    tempo_ms: 1200
+    cycle_variation_percent: 0
+    micro_pause_ms: 0
+    acceleration_profile: "等速に近い流体変形"
+    visual_behavior:
+      indicator_type: "Fluid Morphing (液体変形型)"
+      stroke_consistency: "Fill Mode (塗りつぶし)"
+      scale_variation_percent: 10
+      opacity_range: [0.8, 1.0]
+    time_thresholds:
+      instant_ms: 300
+      short_ms: 2000
+      long_ms: 8000
+    behavior_by_duration:
+      instant:
+        show_indicator: false
+      short:
+        show_indicator: true
+        message_visibility: false
+      long:
+        show_indicator: true
+        message_visibility: true
+        message_rule: "進行度をパーセンテージではなく『Process Phrase』で表示 (e.g., Refining...)"
+    temporal_philosophy:
+      perceived_speed_bias: "重厚かつ正確"
+      emotional_temperature: "冷徹な安定感"
+      continuity_with_ui_motion: "イージング曲線の統一"
+    ai_constraints:
+      forbidden_patterns:
+        - "スピナー回転"
+        - "プログレスバー"
+        - "コミカルなバウンス"
+      allowed_motion_range:
+        rotation_deg_per_sec_max: 30
+        scale_delta_percent_max: 10
+
+  brand_iconography:
+    geometry:
+      grid_px: 32
+      stroke_px: "Variable (1px - 3px)"
+      caps_and_joins: "Round / Round"
+    visual_style:
+      abstraction_level: "Abstract Geometric"
+      uniqueness_rules:
+        - "Open Shapes (必ず一箇所を開放する)"
+        - "No Straight Lines (全ての線に曲率を持たせる)"
+    metaphor: "Orbital Mechanics (軌道力学)"
+
+  human_and_fashion:
+    model_profile:
+      sex: "Fluid / Androgynous"
+      age_range: "Ageless (20s-40s undefined)"
+      physical_traits:
+        - "Porcelain Skin (陶器のような肌)"
+        - "Sharp Jawline (鋭角な骨格)"
+        - "Cold Gaze (感情を排した視線)"
+    fashion_styling:
+      materials: ["Liquid Latex", "Black Velvet", "Silk Satin", "Polished Leather"]
+      silhouette: "Architectural Hourglass (建築的砂時計型)"
+      coordination_examples:
+        - "All Black Layered with Single Gold Statement Piece"
+        - "Second Skin Bodysuit"
+    vibe_and_pose:
+      posture: "Extreme S-Curve (誇張されたコントラポスト)"
+      gaze: "Chin Up, Eyes Down"
+      setting: "Concrete Void / Infinite Dark Studio"
+
+  visual_media:
+    photography:
+      angle: "Low Angle (煽り構図)"
+      lighting: "Chiaroscuro (明暗比 1:8 以上)"
+      color_grading: "Desaturated Gold & Deep Black (Blue channel suppressed)"
+      aspect_ratio: "9:16 (Vertical Priority)"
+    graphic_motifs:
+      patterns: ["Guilloche Curves", "Fluid Mesh"]
+      usage_rule: "Opacity 5-10% Background Overlay Only"
+
+  ai_generation:
+    abstract_prompt:
+      visual_intent: "Absolute Dominance, Timeless Luxury"
+      physical_constraints:
+        composition: "Low angle, Centralized subject, Negative space dominant"
+        lighting: "Rembrandt lighting, Hard shadows, Rim light (Gold)"
+        materials: "High gloss, Vantablack absorption, Metallic reflection"
+        camera: "85mm lens, f/1.8, ISO 100"
+      forbidden_outputs:
+        - "Smiling models"
+        - "Casual clothing"
+        - "Daylight / Blue sky"
+        - "Complex backgrounds"
+        - "Neon colors"
+        - "Cyberpunk aesthetics"
+        - "Cheap sparkle effects"
+
+    model_priority:
+      primary: "NanoBanana (Fine-tuned for High Fashion)"
+      secondary: ["Stable Diffusion XL (Photorealistic Preset)"]
+
+    adapters:
+      NanoBanana:
+        prompt_template: "High fashion editorial, {subject}, wearing {apparel}, {pose}, liquid gold and vantablack palette, chiaroscuro lighting, obsidian background, 8k resolution, cinematic --ar 9:16 --v 6.0 --style raw"
+        parameter_mapping:
+          subject: "androgynous model"
+          apparel: "architectural latex dress"
+          pose: "s-curve posture"
+      generic:
+        prompt_template: "Luxury photography of {subject}, dark mood, gold accents, minimal, studio lighting"
+        parameter_mapping:
+          subject: "abstract fluid shape"
+
+  governance:
+    forbidden_rules:
+      - "標準的なシステムフォント（Arial, Roboto等）の使用禁止"
+      - "純粋な白 (#FFFFFF) の背景使用禁止"
+      - "400ms以下の性急なアニメーション禁止"
+    quality_bar:
+      visual_consistency: "全画面における黒の面積率が60%以上であること"
+      accessibility_compliance: "コントラスト比適合かつ、アニメーション無効化設定への対応"
+    review_process:
+      flow: ["Visual QA (Pixel Perfect)", "Motion QA (Framerate check)", "Brand Alignment"]
+      owner: "Design System Owner"
+
+  lifecycle:
+    versioning: "Semantic Versioning"
+    change_policy:
+      minor: "トークン値の微調整、コンポーネントバリエーション追加"
+      major: "ブランドカラー変更、タイポグラフィ変更、モーション物理法則の変更"
+    audit_cycle: "Quarterly"
+`;
+
+    function copyFullYaml(){ copyText(systemYaml); }
+
+    function copyText(text){
+      const el=document.createElement('textarea');
+      el.value=text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      const toast=document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(()=>{ toast.classList.remove('show'); }, 1200);
+    }
+  </script>
+  <a href="../index.html" style="
+  position: fixed; bottom: 40px; left: 40px; z-index: 1000;
+  background: rgba(15,15,18,0.9); color: #D4AF37;
+  padding: 16px 32px; border-radius: 9999px;
+  font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.1em; text-decoration: none;
+  border: 1px solid rgba(212,175,55,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+" onmouseover="this.style.boxShadow='0 0 20px rgba(212,175,55,0.4)'; this.style.borderColor='#D4AF37'" onmouseout="this.style.boxShadow='0 10px 30px rgba(0,0,0,0.5)'; this.style.borderColor='rgba(212,175,55,0.3)'">
+  ← RETURN
+</a>
+</body>
+</html>

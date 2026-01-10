@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DARK_SUGAR_CULT — Glitch_Rococo_Protocol v1.2.4</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Share+Tech+Mono&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand-primary:#FF55A3;   /* Chemical Pink */
+      --brand-accent:#00F0FF;    /* Cyan */
+      --acid-yellow:#E6FF00;
+      --error-red:#FF0000;
+
+      --text-primary:#F4F1EA;
+      --text-secondary:#A09E99;
+
+      --bg-main:#110F12;
+      --surface:#1A181C;
+
+      --line:rgba(244,241,234,0.16);
+      --line-soft:rgba(244,241,234,0.10);
+
+      --radius-sharp:0px;
+      --shadow-hard:6px 6px 0 rgba(0,0,0,0.9);
+
+      --ease-steps:steps(2,end);
+      --ease-steps5:steps(5,end);
+    }
+
+    *{box-sizing:border-box;}
+
+    /* =========================================================
+       THEME: DARK_SUGAR_CULT
+       ========================================================= */
+    body.theme-dark{
+      --bg-color:#110F12;
+      --text-color:#F4F1EA;
+      --primary-color:#FF55A3;
+      --accent-color:#00F0FF;
+
+      font-family:'Share Tech Mono','Noto Sans JP','Courier New',monospace;
+      background-color:var(--bg-color);
+      color:var(--text-color);
+      margin:0;
+      overflow-x:hidden;
+      width:100%;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:geometricPrecision;
+
+      background-image:
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%201600%20900%27%3E%3Crect%20width%3D%271600%27%20height%3D%27900%27%20fill%3D%27%23110F12%27/%3E%3Cpath%20d%3D%27M0%200H1600V260C1480%20290%201380%20260%201280%20250C1120%20232%20980%20300%20820%20300C640%20300%20520%20240%20360%20250C220%20260%20120%20290%200%20270Z%27%20fill%3D%27%23FF55A3%27/%3E%3Cpath%20d%3D%27M180%20260C140%20360%20150%20470%20190%20560C230%20650%20250%20720%20210%20780C170%20840%2090%20820%2080%20740C70%20660%20120%20600%20130%20520C140%20440%20110%20360%20120%20300C130%20250%20170%20240%20180%20260Z%27%20fill%3D%27%23FF55A3%27/%3E%3Cpath%20d%3D%27M420%20260C380%20360%20390%20480%20440%20590C490%20700%20520%20760%20480%20820C440%20880%20340%20860%20320%20780C300%20700%20350%20620%20360%20540C370%20460%20340%20360%20360%20300C380%20250%20410%20245%20420%20260Z%27%20fill%3D%27%23FF55A3%27/%3E%3Cpath%20d%3D%27M720%20260C660%20380%20670%20540%20740%20660C810%20780%20850%20830%20800%20880C750%20930%20640%20900%20620%20820C600%20740%20660%20650%20670%20560C680%20470%20640%20360%20660%20300C690%20240%20710%20240%20720%20260Z%27%20fill%3D%27%23FF55A3%27/%3E%3Cpath%20d%3D%27M1080%20260C1040%20360%201050%20480%201100%20600C1150%20720%201180%20770%201130%20830C1080%20890%20980%20860%20960%20780C940%20700%20990%20620%201000%20540C1010%20460%20980%20360%201000%20300C1030%20245%201070%20245%201080%20260Z%27%20fill%3D%27%23FF55A3%27/%3E%3Cpath%20d%3D%27M1340%20260C1300%20340%201310%20430%201360%20510C1410%20590%201430%20630%201400%20680C1370%20730%201300%20720%201285%20660C1270%20600%201310%20550%201320%20500C1330%20450%201310%20360%201320%20310C1330%20260%201340%20250%201340%20260Z%27%20fill%3D%27%23FF55A3%27/%3E%3Cpath%20d%3D%27M80%20120C300%2080%20480%20140%20700%20120C940%20100%201120%20150%201480%20120%27%20fill%3D%27none%27%20stroke%3D%27%23FFFFFF%27%20stroke-width%3D%2710%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M200%20360%20C220%20420%20210%20480%20190%20540%27%20fill%3D%27none%27%20stroke%3D%27%23FFFFFF%27%20stroke-width%3D%277%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M470%20380%20C500%20450%20490%20520%20460%20600%27%20fill%3D%27none%27%20stroke%3D%27%23FFFFFF%27%20stroke-width%3D%277%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M760%20380%20C800%20470%20780%20560%20740%20650%27%20fill%3D%27none%27%20stroke%3D%27%23FFFFFF%27%20stroke-width%3D%277%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M1120%20390%20C1150%20470%201130%20560%201090%20650%27%20fill%3D%27none%27%20stroke%3D%27%23FFFFFF%27%20stroke-width%3D%277%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M1280%200H1600V120C1500%20150%201420%20130%201340%20120C1300%20115%201280%20110%201280%2090Z%27%20fill%3D%27%2300F0FF%27/%3E%3Cpath%20d%3D%27M1400%20120C1380%20180%201400%20230%201440%20260C1480%20290%201500%20260%201470%20220C1440%20180%201450%20150%201460%20120Z%27%20fill%3D%27%2300F0FF%27/%3E%3C/svg%3E"),
+    repeating-linear-gradient(90deg, rgba(244,241,234,0.14) 0 2px, transparent 2px 7px),
+    url("data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.75%27%20numOctaves%3D%272%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23n)%27%20opacity%3D%270.16%27/%3E%3C/svg%3E");
+
+      background-size: 100% auto, 100% 100%, 260px 260px;
+      background-position: top center, 0 12%, 0 0;
+      background-repeat: no-repeat, repeat, repeat;
+      background-attachment: scroll, fixed, fixed;
+    }
+
+    /* High-grain overlay */
+    body.theme-dark::before{
+      content:"";
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      pointer-events:none;
+      opacity:0.10;
+      z-index:9999;
+      mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* Typography */
+    .display-font{
+      font-family:'UnifrakturMaguntia',serif;
+      font-weight:700;
+      letter-spacing:-0.01em;
+      line-height:1.0;
+    }
+
+    .container-custom{
+      width:100%;
+      max-width:1240px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+
+    /* Glitch layer */
+    .glitch-layer{
+      position:absolute; inset:0;
+      pointer-events:none;
+      opacity:0;
+      mix-blend-mode:screen;
+      background:
+        repeating-linear-gradient(0deg, rgba(0,240,255,0.28) 0 2px, transparent 2px 10px),
+        repeating-linear-gradient(90deg, rgba(255,85,163,0.22) 0 1px, transparent 1px 8px);
+      transform:translate3d(0,0,0);
+      filter:saturate(140%);
+    }
+
+    /* =========================================================
+       MOTION: Animation Tokens
+       ========================================================= */
+    @keyframes glitch-anim{
+      0%{transform:translate(0)}
+      20%{transform:translate(-2px,2px)}
+      40%{transform:translate(-2px,-2px)}
+      60%{transform:translate(2px,2px)}
+      80%{transform:translate(2px,-2px)}
+      100%{transform:translate(0)}
+    }
+
+    @keyframes step-move{
+      0%{transform:translateX(0);}
+      100%{transform:translateX(100%);}
+    }
+
+    @keyframes liquid-drop{
+      0%{transform:translateY(0) scale(1); border-radius:50%;}
+      20%{transform:translateY(10%) scale(1.1, 0.9); border-radius:50% 50% 60% 60%;}
+      40%{transform:translateY(120%) scale(0.9, 1.2); border-radius:40% 40% 70% 70%;}
+      100%{transform:translateY(150%) scale(1); opacity:0;}
+    }
+
+    .interactive-physicality{
+      transition:all 0.05s steps(2,end);
+      will-change:transform;
+      position:relative;
+      overflow:hidden;
+    }
+    .interactive-physicality:hover{
+      z-index:10;
+      border-color:rgba(0,240,255,0.55);
+      box-shadow:var(--shadow-hard);
+      filter:drop-shadow(2px 0 0 rgba(255,85,163,0.75)) drop-shadow(-2px 0 0 rgba(0,240,255,0.65));
+    }
+    .interactive-physicality:hover .glitch-layer{
+      opacity:0.16;
+      animation:glitch-anim 0.2s linear infinite;
+    }
+
+    /* Cards & Buttons */
+    .hard-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-retro{
+      font-family:'Courier New','Share Tech Mono','Noto Sans JP',monospace;
+      font-weight:400;
+      letter-spacing:0.06em;
+      padding:12px 24px;
+      min-height:44px;
+      border:none;
+      border-radius:0;
+      cursor:pointer;
+      user-select:none;
+      background:#110F12;
+      color:var(--brand-primary);
+      clip-path:polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+      transition:all 0.05s steps(2,end);
+      position:relative;
+      overflow:hidden;
+    }
+    .btn-secondary{
+      border:1px dashed rgba(244,241,234,0.28);
+    }
+    .btn-retro:hover{
+      background-color:var(--brand-primary) !important;
+      color:#000 !important;
+      box-shadow:-3px 0 0 var(--brand-accent), 3px 0 0 var(--acid-yellow);
+      animation:glitch-anim 0.2s linear infinite;
+      border:1px solid #fff;
+      clip-path:none;
+    }
+    .btn-retro:active{
+      transition:none;
+      background:var(--text-primary);
+      color:var(--bg-main);
+      box-shadow:none;
+      animation:none;
+    }
+    .btn-retro:disabled{
+      opacity:0.28;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+
+    .copy-trigger{cursor:pointer; position:relative;}
+
+    #toast{
+      position:fixed;
+      bottom:24px;
+      right:24px;
+      background:rgba(0,0,0,0.92);
+      color:var(--text-primary);
+      padding:10px 16px;
+      font-family:'Courier New','Share Tech Mono',monospace;
+      font-size:12px;
+      letter-spacing:0.06em;
+      z-index:10000;
+      opacity:0;
+      transform:translateY(10px);
+      transition:all 0.05s steps(2,end);
+      pointer-events:none;
+      border:1px solid rgba(0,240,255,0.45);
+      border-radius:0;
+      box-shadow:var(--shadow-hard);
+      text-shadow:2px 0 0 rgba(255,85,163,0.6), -2px 0 0 rgba(0,240,255,0.55);
+    }
+    #toast.show{opacity:1; transform:translateY(0);}
+
+    .header-surface{
+      background:var(--bg-main);
+      border-bottom:1px solid var(--brand-primary);
+      backdrop-filter:none;
+    }
+
+    .section-label{
+      font-family:'Courier New','Share Tech Mono','Noto Sans JP',monospace;
+      font-size:12px;
+      font-weight:400;
+      letter-spacing:0.22em;
+      color:var(--text-secondary);
+      border-bottom:1px solid var(--line);
+      padding-bottom:8px;
+      margin-bottom:20px;
+      display:block;
+      text-transform:uppercase;
+      position:relative;
+    }
+    .section-label::after{
+      content:"";
+      position:absolute;
+      left:0;bottom:-1px;
+      width:38%;
+      height:1px;
+      background:var(--brand-primary);
+      box-shadow:3px 0 0 var(--brand-accent);
+      opacity:0.95;
+    }
+
+    .glitch-text{position:relative; display:inline-block;}
+    .glitch-text::before,
+    .glitch-text::after{
+      content:attr(data-text);
+      position:absolute;
+      left:0; top:0;
+      opacity:0.85;
+      pointer-events:none;
+    }
+    .glitch-text::before{
+      transform:translate(2px,0);
+      color:var(--brand-primary);
+      mix-blend-mode:screen;
+      clip-path:inset(0 0 60% 0);
+    }
+    .glitch-text::after{
+      transform:translate(-2px,0);
+      color:var(--brand-accent);
+      mix-blend-mode:screen;
+      clip-path:inset(40% 0 0 0);
+    }
+
+    .media-placeholder{
+      background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.06));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:'Courier New','Share Tech Mono','Noto Sans JP',monospace;
+      font-size:12px;
+      color:var(--text-secondary);
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      position:relative;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      transition:all 0.05s steps(2,end);
+    }
+    .media-placeholder img{width:100%;height:100%;object-fit:cover;filter:contrast(120%) saturate(140%);}
+    .media-placeholder .censor{
+      position:absolute;
+      left:6%; top:18%;
+      width:88%; height:18%;
+      background:repeating-linear-gradient(90deg, rgba(244,241,234,0.22) 0 2px, rgba(0,0,0,0) 2px 7px);
+      border:1px solid rgba(244,241,234,0.18);
+      mix-blend-mode:overlay;
+    }
+    .media-placeholder .stamp{
+      position:absolute;
+      right:10%;
+      bottom:10%;
+      padding:6px 10px;
+      border:1px solid rgba(255,85,163,1);
+      color:rgba(255,85,163,1);
+      background:rgba(17,15,18,0.75);
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      font-size:10px;
+      transform:rotate(-4deg);
+      box-shadow:var(--shadow-hard);
+    }
+
+    .ds-icon{width:32px;height:32px;display:inline-block;vertical-align:middle;}
+    .slash-accent{width:2px;height:44px;background-color:var(--brand-accent);transform:rotate(12deg);opacity:0.95;box-shadow:4px 0 0 rgba(255,85,163,0.75);}
+
+    .retro-input-container{position:relative;background:transparent;border:0;padding:0;overflow:hidden;}
+    .retro-input{
+      width:100%;
+      background:transparent;
+      border:none;
+      border-bottom:1px solid #333;
+      border-radius:0;
+      padding:14px 10px 12px 10px;
+      font-family:'Courier New','Share Tech Mono','Noto Sans JP',monospace;
+      font-size:16px;
+      outline:none;
+      color:var(--text-primary);
+      transition:all 0.05s steps(2,end);
+    }
+    .retro-input::placeholder{color:var(--text-secondary);opacity:0.65;}
+    .retro-input:focus{
+      border-bottom:1px solid var(--brand-primary);
+      box-shadow:0 4px 0 -2px rgba(0,240,255,0.5);
+      outline:none;
+    }
+
+    @keyframes dark-scan{
+      from{transform:translateX(-100%)}
+      to{transform:translateX(100%)}
+    }
+    .loader-glitch{
+      width:30px;
+      height:6px;
+      padding:0;
+      background:#333;
+      border:none;
+      box-shadow:none;
+      position:relative;
+      overflow:hidden;
+    }
+    .loader-glitch::after{
+      content:'';
+      position:absolute;
+      top:0;left:0;
+      width:100%;height:100%;
+      background:linear-gradient(90deg, transparent, #FF55A3, transparent);
+      animation:dark-scan 0.8s steps(4,end) infinite;
+    }
+    .loader-glitch span{display:none;}
+    .equal-height-grid{display:grid; grid-auto-rows:1fr;}
+    p{margin:0;}
+    .prose p + p{margin-top:1.25em;}
+
+    /* Scrim and Fixes */
+    body.theme-dark::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      background:
+        linear-gradient(180deg,
+          rgba(17,15,18,0.72) 0%,
+          rgba(17,15,18,0.35) 38%,
+          rgba(17,15,18,0.20) 100%);
+    }
+    header, main, section, .container-custom, .hard-card{position:relative;z-index:1;}
+    .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4, .theme-dark h5,
+    .theme-dark p, .theme-dark li, .theme-dark code, .theme-dark label{
+      text-shadow:
+        1px 0 0 rgba(0,0,0,0.95),
+       -1px 0 0 rgba(0,0,0,0.95),
+        0 1px 0 rgba(0,0,0,0.95),
+        0 -1px 0 rgba(0,0,0,0.95);
+    }
+    .color-swatch{position:relative;overflow:hidden;}
+    .color-swatch .swatch-label{
+      position:absolute;left:10px;bottom:10px;padding:6px 8px;
+      background:#110F12;color:#F4F1EA;border:1px solid rgba(244,241,234,0.18);
+      font-size:11px;letter-spacing:0.12em;
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+  <div id="toast">COPIED_//</div>
+
+  <header class="sticky top-0 w-full z-50 header-surface ds-header">
+    <div class="container-custom py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+          <rect x="5" y="5" width="22" height="22" stroke="rgba(244,241,234,0.55)"/>
+          <path d="M6 26L26 6" stroke="var(--brand-primary)"/>
+          <path d="M7 26L27 6" stroke="var(--brand-accent)" opacity="0.55"/>
+        </svg>
+        <h1 class="display-font text-sm tracking-[0.10em]">
+          <span class="glitch-text" data-text="DARK_SUGAR_CULT">DARK_SUGAR_CULT</span>
+        </h1>
+      </div>
+      <button class="btn-retro btn-copy-prompt" onclick="copyFullYaml()">
+        Copy Prompt
+      </button>
+    </div>
+  </header>
+
+  <section class="container-custom pt-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-[color:var(--line)] mb-12 overflow-hidden bg-[color:var(--surface)]">
+      <div class="h-64 md:h-96 overflow-hidden border-b md:border-b-0 md:border-r border-[color:var(--line)] bg-[color:var(--bg-main)] relative">
+        <div class="media-placeholder h-full w-full opacity-100 interactive-physicality">
+          <div class="glitch-layer" aria-hidden="true"></div>
+          <img src="DSC_kv.png" alt="ハードフラッシュの人物（16:9）" class="w-full h-full object-cover">
+          <div class="censor" aria-hidden="true"></div>
+          <div class="stamp" aria-hidden="true">CENSORED</div>
+        </div>
+      </div>
+      <div class="p-8 md:p-12 bg-[color:var(--bg-main)] text-[color:var(--text-primary)] flex flex-col justify-center gap-6 relative interactive-physicality">
+        <div class="glitch-layer" aria-hidden="true"></div>
+        <div class="slash-accent"></div>
+        <h2 class="display-font text-3xl md:text-5xl leading-tight">
+          <span class="glitch-text" data-text="Toxic Sweetness,">Toxic Sweetness,</span><br>
+          <span class="glitch-text" data-text="Structural Decay.">Structural Decay.</span>
+        </h2>
+        <div class="prose">
+          <p class="text-base md:text-lg opacity-90 leading-relaxed">
+            甘さは薬品的に、毒性は秩序の内部に配置する。均整は保つが、座標は従わない。
+          </p>
+          <p class="text-sm text-[color:var(--text-secondary)]">
+            Classical Decadence vs. Digital Noise — それは「拒絶反応」としてのUI。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-[color:var(--line)] mb-12 bg-[color:var(--surface)]">
+      <div class="p-8 border-b md:border-b-0 md:border-r border-[color:var(--line)] flex flex-col gap-4 relative interactive-physicality">
+        <div class="glitch-layer" aria-hidden="true"></div>
+        <h4 class="display-font text-sm text-[color:var(--text-primary)]">Toxic Sweetness</h4>
+        <p class="text-sm text-[color:var(--text-secondary)]">
+          彩度85%以上のピンクと、明度5%以下の黒を隣接。甘さと毒性の同居を、単なる可愛さに落とさない。
+        </p>
+      </div>
+      <div class="p-8 border-b md:border-b-0 md:border-r border-[color:var(--line)] flex flex-col gap-4 relative interactive-physicality">
+        <div class="glitch-layer" aria-hidden="true"></div>
+        <h4 class="display-font text-sm text-[color:var(--text-primary)]">Structural Decay</h4>
+        <p class="text-sm text-[color:var(--text-secondary)]">
+          12カラムの秩序を前提に、意図的なズレとオーバーレイで破壊する。構造は見せ、従属は拒む。
+        </p>
+      </div>
+      <div class="p-8 flex flex-col gap-4 relative interactive-physicality">
+        <div class="glitch-layer" aria-hidden="true"></div>
+        <h4 class="display-font text-sm text-[color:var(--text-primary)]">Visceral Texture</h4>
+        <p class="text-sm text-[color:var(--text-secondary)]">
+          高粘度の液体表現とノイズ粒子を混在。淡いグラデーションは禁止。輪郭と表面張力で「粘度」を描く。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-custom pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+      <div class="md:col-span-5 space-y-16 ds-left">
+
+        <section>
+          <span class="section-label">01 Colors</span>
+          <div class="grid grid-cols-1 gap-4">
+            <div class="h-28 p-6 flex flex-col justify-between shadow-none border border-[color:var(--line)] copy-trigger interactive-physicality color-swatch swatch-pink"
+                 style="background:#FF55A3;" onclick="copyText('#FF55A3')">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <span class="display-font text-[13px]" style="color:#000;">Chemical Pink</span>
+              <span class="font-mono text-xs" style="color:#000;">#FF55A3</span>
+            </div>
+            <div class="h-28 border border-[color:var(--line)] p-6 flex flex-col justify-between copy-trigger interactive-physicality color-swatch swatch-black"
+                 style="background:#110F12;" onclick="copyText('#110F12')">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <span class="display-font text-[13px]">Background Base</span>
+              <span class="font-mono text-xs text-[color:var(--text-secondary)]">#110F12</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="h-20 p-4 font-mono text-[10px] border border-[color:var(--line)] copy-trigger interactive-physicality color-swatch swatch-cyan"
+                   style="background:#00F0FF;color:#000;" onclick="copyText('#00F0FF')">
+                #00F0FF
+                <div class="mt-2 text-[10px]" style="color:#000;">Accent</div>
+                <div class="glitch-layer" aria-hidden="true"></div>
+              </div>
+              <div class="h-20 p-4 font-mono text-[10px] border border-[color:var(--line)] copy-trigger interactive-physicality color-swatch swatch-yellow"
+                   style="background:#E6FF00;color:#000;" onclick="copyText('#E6FF00')">
+                #E6FF00
+                <div class="mt-2 text-[10px]" style="color:#000;">Acid Yellow</div>
+                <div class="glitch-layer" aria-hidden="true"></div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="h-20 p-4 font-mono text-[10px] border border-[color:var(--line)] copy-trigger interactive-physicality color-swatch"
+                   style="background:#F4F1EA;color:#110F12;" onclick="copyText('#F4F1EA')">
+                #F4F1EA
+                <div class="mt-2 text-[10px]" style="color:#110F12;">Text Primary</div>
+                <div class="glitch-layer" aria-hidden="true"></div>
+              </div>
+              <div class="h-20 p-4 font-mono text-[10px] border border-[color:var(--line)] copy-trigger interactive-physicality color-swatch swatch-red"
+                   style="background:#FF0000;color:#000;" onclick="copyText('#FF0000')">
+                #FF0000
+                <div class="mt-2 text-[10px]" style="color:#000;">Error Red</div>
+                <div class="glitch-layer" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">02 Typography Scale</span>
+          <div class="space-y-10 bg-[color:var(--surface)] p-8 border border-[color:var(--line)] relative interactive-physicality">
+            <div class="glitch-layer" aria-hidden="true"></div>
+            <div>
+              <p class="text-[11px] text-[color:var(--text-secondary)] mb-2 tracking-widest">DISPLAY</p>
+              <h4 class="display-font text-4xl mb-2">
+                <span class="glitch-text" data-text="REBELLION">REBELLION</span>
+              </h4>
+              <p class="text-sm text-[color:var(--text-secondary)]">
+                700 / letter-spacing -0.01em / line-height 1.0。装飾は“発光”ではなく“歪み”として付与。
+              </p>
+            </div>
+            <div class="pt-6 border-t border-[color:var(--line-soft)]">
+              <p class="text-[11px] text-[color:var(--text-secondary)] mb-2 tracking-widest">BODY</p>
+              <p class="text-xl mb-2" style="max-width:40em;">
+                Monospace / Gothic Pixel。長文はMonospaceのみ。Blackletterは装飾目的で限定使用。
+              </p>
+              <p class="text-sm text-[color:var(--text-secondary)]">Weight 400 / line-height 1.5。</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">03 Icon Geometry</span>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-4 equal-height-grid">
+            <div class="hard-card items-center justify-center aspect-square interactive-physicality">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                <circle cx="16" cy="10" r="6" stroke="rgba(244,241,234,0.55)"/>
+                <path d="M4 28C4 22 9 18 16 18C23 18 28 22 28 28" stroke="rgba(244,241,234,0.55)"/>
+                <path d="M6 28C6 23 10 20 16 20" stroke="var(--brand-primary)" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="hard-card items-center justify-center aspect-square interactive-physicality">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                <path d="M6 4H22L26 8V28H6V4Z" stroke="rgba(244,241,234,0.55)"/>
+                <rect x="10" y="20" width="12" height="8" stroke="var(--brand-accent)"/>
+                <path d="M10 4V10H18V4" stroke="rgba(244,241,234,0.55)"/>
+              </svg>
+            </div>
+            <div class="hard-card items-center justify-center aspect-square interactive-physicality">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                <path d="M4 8H28L24 26H8L4 8Z" stroke="rgba(244,241,234,0.55)"/>
+                <path d="M10 8V4C10 4 11 2 16 2C21 2 22 4 22 4V8" stroke="var(--brand-primary)"/>
+                <line x1="12" y1="14" x2="12" y2="20" stroke="var(--brand-accent)" opacity="0.6"/>
+              </svg>
+            </div>
+            <div class="hard-card items-center justify-center aspect-square interactive-physicality">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                <path d="M14 10H8C5 10 3 12 3 16C3 20 5 22 8 22H14" stroke="rgba(244,241,234,0.55)"/>
+                <path d="M18 22H24C27 22 29 20 29 16C29 12 27 10 24 10H18" stroke="rgba(244,241,234,0.55)"/>
+                <line x1="10" y1="16" x2="22" y2="16" stroke="var(--brand-primary)"/>
+                <line x1="10" y1="15" x2="22" y2="15" stroke="var(--brand-accent)" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="hard-card items-center justify-center aspect-square interactive-physicality">
+              <div class="glitch-layer" aria-hidden="true"></div>
+              <svg class="ds-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+                <rect x="4" y="4" width="24" height="24" stroke="rgba(244,241,234,0.55)"/>
+                <line x1="16" y1="12" x2="16" y2="22" stroke="var(--brand-primary)"/>
+                <line x1="16" y1="8" x2="16" y2="8.01" stroke="var(--brand-accent)" stroke-width="4"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">04 Layout & Spacing</span>
+          <div class="space-y-4">
+            <div class="p-6 bg-[color:var(--surface)] border border-[color:var(--line)] relative interactive-physicality">
+              <div class="glitch-layer" aria-hidden="true"></div>
+
+              <div class="grid grid-cols-12 h-6 gap-1 mb-6">
+                <div style="background:#FF55A3"></div><div style="background:#00F0FF"></div><div style="background:#FF55A3"></div><div style="background:#00F0FF"></div>
+                <div style="background:#FF55A3"></div><div style="background:#00F0FF"></div><div style="background:#FF55A3"></div><div style="background:#00F0FF"></div>
+                <div style="background:#FF55A3"></div><div style="background:#00F0FF"></div><div style="background:#FF55A3"></div><div style="background:#00F0FF"></div>
+              </div>
+
+              <div class="mb-6">
+                <p class="text-[11px] text-[color:var(--text-secondary)] mb-2 tracking-widest">SPACING RHYTHM (NON-LINEAR)</p>
+                <div class="flex items-end gap-1 h-24 border-b border-[color:var(--line-soft)] pb-1">
+                  <div class="w-1 bg-[color:var(--brand-primary)] h-1" title="2px"></div>
+                  <div class="w-2 bg-[color:var(--brand-primary)] h-2" title="4px"></div>
+                  <div class="w-6 bg-[color:var(--brand-primary)] h-6 opacity-80" title="12px"></div>
+                  <div class="w-12 bg-[color:var(--brand-primary)] h-12 opacity-60" title="24px"></div>
+                  <div class="w-24 bg-[color:var(--brand-primary)] h-20 opacity-40" title="48px"></div>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <p class="text-[11px] text-[color:var(--text-secondary)] mb-2 tracking-widest">RADIUS STRATEGY</p>
+                <div class="flex gap-8 items-center">
+                  <div class="text-center">
+                    <div class="w-12 h-12 border border-[color:var(--brand-accent)] bg-[color:var(--bg-main)] mb-1"></div>
+                    <span class="text-[10px] text-[color:var(--text-secondary)]">0px (Sharp)</span>
+                  </div>
+                  <div class="text-center">
+                    <div class="w-12 h-12 bg-[color:var(--brand-primary)] opacity-80 mb-1" style="border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;"></div>
+                    <span class="text-[10px] text-[color:var(--text-secondary)]">Liquid (Blob)</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-[12px] tracking-widest text-[color:var(--text-secondary)] mt-4">
+                12 Columns / 12px Gutter / Spacing (2,4,12,24,48)
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="p-8 border border-[color:var(--line)] bg-[color:var(--surface)] space-y-6 relative interactive-physicality">
+          <div class="glitch-layer" aria-hidden="true"></div>
+          <h3 class="display-font text-xl border-b border-[color:var(--line)] pb-3">Forbidden Rules</h3>
+          <ul class="text-sm space-y-3 text-[color:var(--text-secondary)]">
+            <li class="flex gap-4"><span style="color:#FF0000;">✕</span> 明朝体とゴシック体の標準的混植（意図的ノイズ以外禁止）</li>
+            <li class="flex gap-4"><span style="color:#FF0000;">✕</span> ドロップシャドウの拡散（Blur）を8px以上に設定すること</li>
+            <li class="flex gap-4"><span style="color:#FF0000;">✕</span> 液体表現で不透明度80%以下の透過を使用すること</li>
+          </ul>
+        </section>
+
+      </div>
+
+      <div class="md:col-span-7 space-y-16 ds-right">
+
+        <section>
+          <span class="section-label">05 Human & Photography Style</span>
+          <div class="space-y-12">
+
+            <div class="space-y-6">
+              <h4 class="display-font text-sm tracking-[0.10em] text-[color:var(--text-primary)]">Fashion Styling</h4>
+              <div class="grid grid-cols-2 gap-6 equal-height-grid">
+                <img src="DSC_fs01.jpg" alt="PVCと黒ベルベット（ハードフラッシュ 16:9）">
+                <img src="DSC_fs02.jpg" alt="ダメージデニムと合成ファー（ハードフラッシュ 16:9）">
+              </div>
+              <p class="text-sm text-[color:var(--text-secondary)]">
+                PVC／ブラックベルベット／ダメージデニム／合成ファー。オーバーサイズ vs タイト。安全ピンと包帯で改造されたテディベアを主役小道具として統合。
+              </p>
+            </div>
+
+            <div class="space-y-6">
+              <h4 class="display-font text-sm tracking-[0.10em] text-[color:var(--text-primary)]">Photography Style</h4>
+              <div class="grid grid-cols-2 gap-6 equal-height-grid">
+                <img src="DSC_g01.jpg" alt="アイレベル（オンカメラフラッシュ 16:9）">
+                <img src="DSC_g02.jpg" alt="わずかにローアングル（オンカメラフラッシュ 16:9）">
+              </div>
+              <p class="text-sm text-[color:var(--text-secondary)]">
+                オンカメラフラッシュ、硬い影、白いスペキュラ。漂白された黒と飽和ピンク。重要要素を遮るノイズ／バーコードを“検閲”として配置。
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        <section>
+          <span class="section-label">06 UI Component & Motion Library</span>
+
+          <div class="space-y-12">
+            
+            <div class="space-y-4">
+              <p class="text-[12px] tracking-widest text-[color:var(--text-secondary)]">BUTTONS</p>
+              <div class="flex flex-wrap gap-6 items-center bg-[color:var(--surface)] p-8 border border-[color:var(--line)] relative interactive-physicality">
+                <div class="glitch-layer" aria-hidden="true"></div>
+                <button class="btn-retro w-44">Primary</button>
+                <button class="btn-retro btn-secondary w-44">Secondary</button>
+                <button class="btn-retro w-44" disabled>Disabled</button>
+              </div>
+              <p class="text-sm text-[color:var(--text-secondary)]">
+                Hover：RGB＋Acid Yellowのスプリット＋glitch-anim。Active：即時反転（0ms）。
+              </p>
+            </div>
+
+            <div class="space-y-4">
+              <p class="text-[12px] tracking-widest text-[color:var(--text-secondary)]">MOTION PHYSICS</p>
+              <div class="p-6 bg-[color:var(--surface)] text-[color:var(--text-primary)] space-y-6 border border-[color:var(--line)] relative interactive-physicality">
+                <div class="glitch-layer" aria-hidden="true"></div>
+
+                <div class="space-y-2">
+                   <p class="text-sm text-[color:var(--text-secondary)]">
+                    Digital Malfunction. 滑らかさを排除し、反応は短く攻撃的。
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="border border-[color:var(--line)] p-2 flex flex-col items-center gap-2">
+                    <div class="w-8 h-8 bg-[color:var(--brand-primary)]" style="animation: glitch-anim 0.2s linear infinite;"></div>
+                    <span class="text-[10px] font-mono text-[color:var(--text-secondary)]">GLITCH</span>
+                  </div>
+                   <div class="border border-[color:var(--line)] p-2 flex flex-col items-center gap-2 overflow-hidden relative h-20 justify-end">
+                    <div class="w-4 h-4 bg-[color:var(--brand-primary)] absolute top-0" style="animation: liquid-drop 1.2s infinite;"></div>
+                    <span class="text-[10px] font-mono text-[color:var(--text-secondary)] relative z-10 bg-[color:var(--surface)]">FLUID</span>
+                  </div>
+                  <div class="border border-[color:var(--line)] p-2 flex flex-col items-center gap-2 overflow-hidden">
+                    <div class="w-full h-8 bg-[color:var(--line-soft)] relative">
+                      <div class="h-full w-1/5 bg-[color:var(--brand-accent)] absolute left-0 top-0" style="animation: step-move 1.5s steps(5,end) infinite;"></div>
+                    </div>
+                    <span class="text-[10px] font-mono text-[color:var(--text-secondary)]">STEPS(5)</span>
+                  </div>
+                </div>
+
+                <div class="space-y-2 font-mono text-[11px] text-[color:var(--text-secondary)] border-t border-[color:var(--line-soft)] pt-4">
+                  <div class="flex justify-between pb-1"><span>Transition</span><span>0.05s steps(2,end)</span></div>
+                  <div class="flex justify-between"><span>Fluid Drop</span><span>1200ms</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 equal-height-grid">
+              <div class="hard-card gap-6 min-h-[160px] interactive-physicality">
+                <div class="glitch-layer" aria-hidden="true"></div>
+                <h5 class="display-font text-base">Cards</h5>
+                <div class="media-placeholder flex-1 p-5 text-center leading-relaxed relative" style="border:1px solid rgba(244,241,234,0.12);">
+                  <div class="censor" aria-hidden="true" style="top:40%;height:14%;"></div>
+                  ボーダーで区分し、影は硬く落とす。ホバーで2pxのジッターではなく“glitch-anim”で攻撃的に揺らす。
+                </div>
+                <p class="text-sm text-[color:var(--text-secondary)]">
+                  Flat with Border。Sticker LayerとLiquid Overlayが階層の不安定さを示す。
+                </p>
+              </div>
+
+              <div class="hard-card items-center justify-center gap-6 min-h-[160px] interactive-physicality">
+                <div class="glitch-layer" aria-hidden="true"></div>
+                <div class="loader-glitch" aria-label="Loading indicator">
+                  <span>SYSTEM_FAILURE... REBOOTING...</span>
+                </div>
+                <p class="text-[12px] tracking-widest text-[color:var(--text-secondary)]">dark-scan</p>
+                <p class="text-sm text-[color:var(--text-secondary)] text-center">
+                  滑らかな回転／フェードは禁止。steps(4,end) のスキャンバーのみで緊張を維持。
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-6 pt-6">
+              <p class="text-[12px] tracking-widest text-[color:var(--text-secondary)]">FORMS</p>
+              <div class="bg-[color:var(--surface)] p-8 border border-[color:var(--line)] space-y-10 relative interactive-physicality">
+                <div class="glitch-layer" aria-hidden="true"></div>
+                <div class="space-y-4">
+                  <label class="text-[12px] tracking-[0.14em] block text-[color:var(--text-secondary)]">Creative Identifier</label>
+                  <div class="retro-input-container">
+                    <input type="text" placeholder="ID / SUBJECT / BARCODE..." class="retro-input input-demo" />
+                  </div>
+                  <p class="text-sm text-[color:var(--text-secondary)]">
+                    Clinical &amp; Decadent。親しみやすさ・共感の語彙は禁止。必要時は偽装エラーで提示。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const systemYaml = `design_system:
+
+  meta:
+    version: "1.2.0"
+    language: "ja-JP"
+    owner_role: "Design System Owner"
+    last_updated: "2026-01-09"
+    project_code: "DARK_SUGAR_CULT"
+
+  strategy:
+    concept_name: "Glitch_Rococo_Protocol"
+    archetype: "The Artificial Doll"
+    brand_tension: "Classical Decadence (Rococo) vs. Digital Noise (Glitch)"
+
+    design_principles:
+      - name: "Toxic Sweetness"
+        intent: "甘さと毒性の同居"
+        physical_translation: "彩度85%以上のピンク(#FF55A3)と明度5%以下の黒(#110F12)の隣接配置によるハレーション誘発"
+      - name: "Structural Decay"
+        intent: "整然とした構造の破壊"
+        physical_translation: "CSS Gridシステムに対する意図的な座標ズレ(offset)とz-indexによる要素の強制オーバーレイ"
+      - name: "Visceral Texture"
+        intent: "視覚的な粘度と触感"
+        physical_translation: "ハイライト強度の高い液体表現（Specular: 100%）とデジタルノイズ粒子（Grain）の混在"
+
+    target_audience:
+      segment: "Digital Native / Subculture / Goth-Tech"
+      price_range: "High-End Niche"
+      values: ["Individualism", "Chaos", "Anti-Establishment"]
+
+    accessibility:
+      contrast_ratio_target: "AA (4.5:1) for Text-Content only. Ignore for decorative glitches."
+      minimum_touch_target_px: 44
+      focus_visibility_rule: "Cyan (#00F0FF) Glitchによる2pxのアウトラインと色収差(Chromatic Aberration)エフェクト"
+
+  design_tokens:
+    color:
+      brand_primary: "#FF55A3"
+      brand_accent: "#00F0FF"
+      text_primary: "#F4F1EA"
+      background_base: "#110F12"
+    spacing:
+      xs: 2
+      sm: 4
+      md: 12
+      lg: 24
+      xl: 48
+      logic: "素数ベースの不規則なリズムによる非線形スケール"
+    radius:
+      sharp: 0
+      liquid: "50% (Organic blobs defined by SVG path)"
+    motion:
+      glitch_tick_ms: 40
+      fluid_drop_ms: 1200
+      instant_ms: 0
+
+  color_system:
+    primary:
+      name: "Chemical Pink"
+      values: { hex: "#FF55A3", rgb: "255, 85, 163", hsl: "332, 100%, 67%" }
+      luminance_target: "High"
+      usage: "Call to Action, Interactive Highlights, Warning Glitches"
+
+    background:
+      main: { hex: "#110F12", rgb: "17, 15, 18", hsl: "280, 9%, 6%" }
+      surface: { hex: "#1A181C", rgb: "26, 24, 28", hsl: "270, 8%, 10%" }
+      texture:
+        type: "Viscous Liquid Overlay"
+        opacity: 1.0
+        pattern: "Gravity-dependent drips"
+        specular_highlight: "Sharp White (#FFFFFF)"
+        physics: "高粘度液体の垂れ落ちる形状をベクター描画。淡いグラデーションによる暗示は禁止し、明確な輪郭線と表面張力を持つ液だまりとして配置。"
+
+    semantic:
+      success: { hex: "#00F0FF", rgb: "0, 240, 255", hsl: "184, 100%, 50%" }
+      error: { hex: "#FF0000", rgb: "255, 0, 0", hsl: "0, 100%, 50%" }
+      warning: { hex: "#E6FF00", rgb: "230, 255, 0", hsl: "65, 100%, 50%" }
+      text:
+        primary: { hex: "#F4F1EA" }
+        secondary: { hex: "#A09E99" }
+
+  typography:
+    scale:
+      base_px: 16
+      ratio: 1.414
+    display:
+      family: "Old English Text MT, Fraktur, or Custom Blackletter"
+      weight: 700
+      letter_spacing_em: -0.01
+      line_height_ratio: 1.0
+      intent: "Brand Identity, Headers, Decorative Noise"
+      effect: "Neon Glow (2px blur) or Drip Distortion"
+    body:
+      family: "Roboto Mono, Courier New, Gothic Pixel"
+      weight: 400
+      line_height_ratio: 1.5
+      readability_rules: 
+        - "長文コンテンツはMonospaceのみを使用"
+        - "Blackletterは装飾または短単語の見出しのみに限定"
+    copy_writing:
+      tone: "Clinical & Decadent"
+      forbidden_patterns: 
+        - "親しみやすさの演出"
+        - "ユーザーへの共感"
+        - "「ぜひ」「〜しましょう」などの勧誘表現"
+
+  layout:
+    grid:
+      columns: 12
+      gutter_px: 12
+      margin_px: 24
+    spacing_logic: "Sticker Bombing: 要素間の重なり（z-index）を許容し、ホワイトスペースを埋め尽くす配置"
+    responsive:
+      breakpoints:
+        mobile: { min: 0, max: 767 }
+        tablet: { min: 768, max: 1023 }
+        desktop: { min: 1024 }
+      behavior_rules:
+        typography_scaling: "Fluid Typography via clamp()"
+        column_collapse: "Stack vertically with visible overlapping borders (border-width: 1px)"
+
+  ui_component_library:
+    global_states: [default, hover (glitch), active, disabled, system_failure]
+
+    buttons:
+      shape_rule: "Sharp edges (border-radius: 0)"
+      padding_scale: ["sm", "md"]
+      states_behavior:
+        hover: "Background split into RGB channels, Text displacement (X: 2px, Y: -1px)"
+        active: "Invert colors instantly (filter: invert(1))"
+        disabled: "Opacity 0.3 with Strike-through text"
+
+    cards:
+      elevation_level: "Flat with 1px Solid Border"
+      interaction_physics: "On hover: 2px translate X/Y random direction (Jitter effect)"
+
+    forms:
+      input_style: "Terminal Style: Black background, Green/Pink cursor"
+      validation_tone: "System Error Code (e.g., 'ERR_INVALID_INPUT_0x5F')"
+
+  ui_physics:
+    shape:
+      base_radius_px: 0
+      logic: "矩形（デジタル/無機質）と不定形（液体/有機質）の二項対立のみを許容。中間の角丸は禁止。"
+    elevation:
+      shadow_model: "Hard Drop Shadow (No Blur)"
+      layers: ["Base", "Sticker Layer 1", "Sticker Layer 2", "Liquid Overlay", "Glitch Noise"]
+    motion:
+      easing_curve: "steps(5, end)"
+      duration_reference: "Short & Aggressive"
+      philosophy: "Digital Malfunction (誤作動)"
+      glitch_behavior:
+        type: "Strong Chromatic Aberration & Displacement"
+        trigger: "Hover, Load, Transition"
+        parameters:
+          x_shift_px_max: 10
+          rgb_split_px: 4
+          frequency: "High (every 40ms)"
+        intent: "ユーザーの操作に対するシステム的な拒絶反応の演出"
+
+  loading_motion:
+    tempo_ms: 80
+    cycle_variation_percent: 0
+    micro_pause_ms: 0
+    acceleration_profile: "Step function (No smoothing)"
+    visual_behavior:
+      indicator_type: "Glitch Text / Random Character Generation"
+      stroke_consistency: "N/A"
+      scale_variation_percent: 20
+      opacity_range: [0.0, 1.0]
+    time_thresholds:
+      instant_ms: 0
+      short_ms: 500
+      long_ms: 2000
+    behavior_by_duration:
+      instant:
+        show_indicator: false
+      short:
+        show_indicator: true
+        message_visibility: false
+      long:
+        show_indicator: true
+        message_visibility: true
+        message_rule: "SYSTEM_FAILURE... REBOOTING... などの偽装エラーメッセージを表示"
+    temporal_philosophy:
+      perceived_speed_bias: "不快なほど速い"
+      emotional_temperature: "焦燥感を与える"
+      continuity_with_ui_motion: "コマ落ち（Frame Drop）をシミュレート"
+    ai_constraints:
+      forbidden_patterns:
+        - "滑らかな回転"
+        - "フェードイン/アウト"
+        - "有機的な呼吸のような動き"
+      allowed_motion_range:
+        rotation_deg_per_sec_max: 0
+        scale_delta_percent_max: 0
+
+  brand_iconography:
+    geometry:
+      grid_px: 32
+      stroke_px: 2
+      caps_and_joins: "Square caps, Miter joins"
+    visual_style:
+      abstraction_level: "Pixel Art or High-Contrast Vector"
+      uniqueness_rules: 
+        - "ビットマップの欠損を含める"
+        - "解剖学的モチーフ（心臓、目、骨）と電子部品の融合"
+    metaphor: "Cybernetic Occultism"
+
+  human_and_fashion:
+    model_profile:
+      sex: "Female or Androgynous"
+      age_range: "Indeterminate (Artificial)"
+      physical_traits: 
+        - "Porcelain or Synthetic Skin Texture"
+        - "Void Eyes (Black Sclera or unnatural colors)"
+        - "Inorganic joints visible"
+    fashion_styling:
+      materials: ["Latex", "PVC", "Lace", "Transparent Plastic"]
+      silhouette: "Lolita Fashion meets Cyberpunk Hardware"
+      coordination_examples: 
+        - "Black Gothic Lolita dress with exposed cabling"
+        - "Medical bandages paired with neon accessories"
+    vibe_and_pose:
+      posture: "Rigid, Marionette-like, Broken doll"
+      gaze: "Vacant, Direct camera stare"
+      setting: "Clinical Lab or Neon-lit Ruins"
+
+  visual_media:
+    photography:
+      angle: "High Angle (Surveillance) or Dutch Angle"
+      lighting: "Direct Flash, Hard Shadows, Ring Light reflection"
+      color_grading: "Crushed Blacks, High Saturation in Pinks/Cyans"
+      aspect_ratio: "16:9"
+    graphic_motifs:
+      patterns: ["Checkerboard", "Barcode", "Hazard Stripes", "Magic Circles (Circuit board style)"]
+      usage_rule: "背景や被写体にプロジェクションマッピングのように投影"
+
+  ai_generation:
+    abstract_prompt:
+      visual_intent: "Flash photography of a cybernetic gothic doll in a glitching digital void"
+      physical_constraints:
+        composition: "Centered subject, chaotic background elements"
+        lighting: "Hard flash, harsh contrast, neon rim light"
+        materials: "Shiny latex, wet fluid, glowing plastic, pixelated noise"
+        camera: "Disposable camera aesthetic, chromatic aberration"
+      forbidden_outputs:
+        - "Natural sunlight"
+        - "Smiling model"
+        - "Soft bokeh"
+        - "Warm color palette"
+        - "Generic Cyberpunk cityscapes"
+        - "Steampunk gears"
+        - "Vintage sepia"
+
+    model_priority:
+      primary: "NanoBanana (Fine-tuned on Goth/Glitch)"
+      secondary: ["Stable Diffusion XL (w/ LoRA: Glitch, LoRA: Latex)"]
+
+    adapters:
+      NanoBanana:
+        prompt_template: "photo of {{subject}}, {{fashion}}, {{action}}, glitch art style, datamosh, heavy grain, {{colors}} lighting, flash photography"
+        parameter_mapping: "cfg_scale: 12, steps: 40"
+      generic:
+        prompt_template: "gothic android doll, dripping pink liquid, error message overlay, harsh flash lighting, {{subject}}, black background"
+        parameter_mapping: "cfg_scale: 7.0"
+
+  governance:
+    forbidden_rules:
+      - "明朝体とゴシック体の標準的な混植（意図的なノイズ演出以外での使用禁止）"
+      - "ドロップシャドウの拡散（Blur）を1px以上に設定すること（Hard Shadowのみ許可）"
+      - "液体の表現に不透明度90%以下の透過を使用すること（濃厚な質感を維持）"
+      - "角丸（border-radius）の使用（0px または 50% の二択のみ）"
+    quality_bar:
+      visual_consistency: "全画面において必ず1箇所以上の「視覚的グリッチ（ノイズ）」が含まれていること"
+      accessibility_compliance: "必須（ただし装飾要素におけるコントラスト比低下は許容）"
+    review_process:
+      flow: ["Concept Design", "Structural Review", "Glitch Tuning", "Engineering Implementation"]
+      owner: "Design System Owner"
+
+  lifecycle:
+    versioning: "Semantic Versioning"
+    change_policy:
+      minor: "新しいグリッチパターンの追加、アイコンの追加"
+      major: "カラーパレットの変更、タイポグラフィ階層の刷新"
+    audit_cycle: "Quarterly Review for 'Coolness' Decay"
+`;
+
+    function copyFullYaml(){ copyText(systemYaml); }
+
+    function copyText(text){
+      const el=document.createElement('textarea');
+      el.value=text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      const toast=document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(()=>{ toast.classList.remove('show'); }, 1200);
+    }
+  </script>
+  <a href="../index.html" style="
+  position: fixed; bottom: 24px; left: 24px; z-index: 1000;
+  background: #110F12; color: #FF55A3;
+  padding: 12px 24px; border: 1px solid #FF55A3;
+  font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-decoration: none;
+  box-shadow: 3px 0 0 #00F0FF; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+  transition: all 0.05s steps(2,end);
+" onmouseover="this.style.background='#FF55A3'; this.style.color='#000'" onmouseout="this.style.background='#110F12'; this.style.color='#FF55A3'">
+  &lt;&lt; BACK
+</a>
+</body>
+</html>
